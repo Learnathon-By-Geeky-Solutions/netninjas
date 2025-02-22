@@ -17,10 +17,9 @@ namespace QRCodeBasedMetroTicketingSystem.Controllers
             this.userManager = userManager;
         }
 
-        public IActionResult Login()
-        {
-            return View();
-        }
+        public IActionResult Login() => View();
+        public IActionResult Register() => View();
+        
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
@@ -39,24 +38,21 @@ namespace QRCodeBasedMetroTicketingSystem.Controllers
             }
             return View(model);
         }
-        public IActionResult Register()
-        {
-            return View();
-        }
 
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
-                Random random = new Random();
-                int randomNumber = random.Next(1, 9999);
+                /* Random random = new Random();
+                 int randomNumber = random.Next(10, 999);*/
                 ApplicationUser users = new ApplicationUser
                 {
                     FirstName = model.FirstName,
                     LastName = model.LastName,
                     Email = model.Email,
-                    UserName = model.FirstName + model.LastName + randomNumber.ToString()
+                    //UserName = model.FirstName + model.LastName + randomNumber.ToString()
+                    UserName = model.Email
                 };
                 var result = await userManager.CreateAsync(users, model.Password);
 
@@ -74,6 +70,11 @@ namespace QRCodeBasedMetroTicketingSystem.Controllers
                 }
             }
             return View(model);
+        }
+        public async Task<IActionResult> logout()
+        {
+            await signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
         }
     }
 }
