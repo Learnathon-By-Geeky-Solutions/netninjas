@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using QRCodeBasedMetroTicketingSystem.Data;
 using QRCodeBasedMetroTicketingSystem.Models;
+using QRCodeBasedMetroTicketingSystem.Services.Implementation;
+using QRCodeBasedMetroTicketingSystem.Services.Interface;
 
 var builder = WebApplication.CreateBuilder(args);
 

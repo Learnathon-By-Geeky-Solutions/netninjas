@@ -71,7 +71,7 @@ namespace QRCodeBasedMetroTicketingSystem.Controllers
         public async Task<IActionResult> logout()
         {
             await signInManager.SignOutAsync();
-            return RedirectToAction("Login");
+            return RedirectToAction("Index", "Home");
         }
         
         public async Task<IActionResult> Profile()

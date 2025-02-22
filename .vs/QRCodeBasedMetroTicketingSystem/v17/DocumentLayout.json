@@ -1,0 +1,151 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\GeekySolution\\netninjas\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{45A404FE-FCF9-4D9A-9F93-208635A05FAB}|QRCodeBasedMetroTicketingSystem\\QRCodeBasedMetroTicketingSystem.csproj|d:\\geekysolution\\netninjas\\qrcodebasedmetroticketingsystem\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{45A404FE-FCF9-4D9A-9F93-208635A05FAB}|QRCodeBasedMetroTicketingSystem\\QRCodeBasedMetroTicketingSystem.csproj|solutionrelative:qrcodebasedmetroticketingsystem\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{45A404FE-FCF9-4D9A-9F93-208635A05FAB}|QRCodeBasedMetroTicketingSystem\\QRCodeBasedMetroTicketingSystem.csproj|d:\\geekysolution\\netninjas\\qrcodebasedmetroticketingsystem\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{45A404FE-FCF9-4D9A-9F93-208635A05FAB}|QRCodeBasedMetroTicketingSystem\\QRCodeBasedMetroTicketingSystem.csproj|solutionrelative:qrcodebasedmetroticketingsystem\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{45A404FE-FCF9-4D9A-9F93-208635A05FAB}|QRCodeBasedMetroTicketingSystem\\QRCodeBasedMetroTicketingSystem.csproj|d:\\geekysolution\\netninjas\\qrcodebasedmetroticketingsystem\\views\\shared\\_loginpartial.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{45A404FE-FCF9-4D9A-9F93-208635A05FAB}|QRCodeBasedMetroTicketingSystem\\QRCodeBasedMetroTicketingSystem.csproj|solutionrelative:qrcodebasedmetroticketingsystem\\views\\shared\\_loginpartial.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{45A404FE-FCF9-4D9A-9F93-208635A05FAB}|QRCodeBasedMetroTicketingSystem\\QRCodeBasedMetroTicketingSystem.csproj|d:\\geekysolution\\netninjas\\qrcodebasedmetroticketingsystem\\views\\account\\profile.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{45A404FE-FCF9-4D9A-9F93-208635A05FAB}|QRCodeBasedMetroTicketingSystem\\QRCodeBasedMetroTicketingSystem.csproj|solutionrelative:qrcodebasedmetroticketingsystem\\views\\account\\profile.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{45A404FE-FCF9-4D9A-9F93-208635A05FAB}|QRCodeBasedMetroTicketingSystem\\QRCodeBasedMetroTicketingSystem.csproj|d:\\geekysolution\\netninjas\\qrcodebasedmetroticketingsystem\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{45A404FE-FCF9-4D9A-9F93-208635A05FAB}|QRCodeBasedMetroTicketingSystem\\QRCodeBasedMetroTicketingSystem.csproj|solutionrelative:qrcodebasedmetroticketingsystem\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 1,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedHeight": 597,
+          "SelectedChildIndex": 7,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:1:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:130:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{13b12e3e-c1b4-4539-9371-4fe9a0d523fc}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:130:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "AccountController.cs",
+              "DocumentMoniker": "D:\\GeekySolution\\netninjas\\QRCodeBasedMetroTicketingSystem\\Controllers\\AccountController.cs",
+              "RelativeDocumentMoniker": "QRCodeBasedMetroTicketingSystem\\Controllers\\AccountController.cs",
+              "ToolTip": "D:\\GeekySolution\\netninjas\\QRCodeBasedMetroTicketingSystem\\Controllers\\AccountController.cs",
+              "RelativeToolTip": "QRCodeBasedMetroTicketingSystem\\Controllers\\AccountController.cs",
+              "ViewState": "AgIAAEsAAAAAAAAAAAAmwFMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-22T18:21:18.387Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "_LoginPartial.cshtml",
+              "DocumentMoniker": "D:\\GeekySolution\\netninjas\\QRCodeBasedMetroTicketingSystem\\Views\\Shared\\_LoginPartial.cshtml",
+              "RelativeDocumentMoniker": "QRCodeBasedMetroTicketingSystem\\Views\\Shared\\_LoginPartial.cshtml",
+              "ToolTip": "D:\\GeekySolution\\netninjas\\QRCodeBasedMetroTicketingSystem\\Views\\Shared\\_LoginPartial.cshtml",
+              "RelativeToolTip": "QRCodeBasedMetroTicketingSystem\\Views\\Shared\\_LoginPartial.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-02-22T18:17:05.622Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Profile.cshtml",
+              "DocumentMoniker": "D:\\GeekySolution\\netninjas\\QRCodeBasedMetroTicketingSystem\\Views\\Account\\Profile.cshtml",
+              "RelativeDocumentMoniker": "QRCodeBasedMetroTicketingSystem\\Views\\Account\\Profile.cshtml",
+              "ToolTip": "D:\\GeekySolution\\netninjas\\QRCodeBasedMetroTicketingSystem\\Views\\Account\\Profile.cshtml",
+              "RelativeToolTip": "QRCodeBasedMetroTicketingSystem\\Views\\Account\\Profile.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-02-22T18:12:29.949Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "D:\\GeekySolution\\netninjas\\QRCodeBasedMetroTicketingSystem\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "QRCodeBasedMetroTicketingSystem\\Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "D:\\GeekySolution\\netninjas\\QRCodeBasedMetroTicketingSystem\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "QRCodeBasedMetroTicketingSystem\\Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABoAAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-02-22T18:08:09.575Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\GeekySolution\\netninjas\\QRCodeBasedMetroTicketingSystem\\Program.cs",
+              "RelativeDocumentMoniker": "QRCodeBasedMetroTicketingSystem\\Program.cs",
+              "ToolTip": "D:\\GeekySolution\\netninjas\\QRCodeBasedMetroTicketingSystem\\Program.cs",
+              "RelativeToolTip": "QRCodeBasedMetroTicketingSystem\\Program.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAAABAAAABAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-22T18:05:38.711Z",
+              "EditorCaption": ""
+            }
+          ]
+        },
+        {
+          "DockedHeight": 35,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{0ad07096-bba9-4900-a651-0598d26f6d24}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
