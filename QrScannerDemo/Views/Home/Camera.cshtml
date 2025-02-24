@@ -1,0 +1,182 @@
+﻿@{
+    ViewData["Title"] = "QR Code Camera Scanner";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">QR Code Camera Scanner</h5>
+                </div>
+                <div class="card-body">
+                    <div class="text-center mb-3">
+                        <video id="video" class="img-fluid" style="max-width: 100%" playsinline></video>
+                        <canvas id="canvas" style="display: none;"></canvas>
+                        <div id="scanRegion" style="
+                            position: absolute;
+                            border: 2px solid #00ff00;
+                            box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.5);
+                            display: none;">
+                        </div>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button id="startButton" class="btn btn-primary">Start Camera</button>
+                        <button id="switchCamera" class="btn btn-secondary" style="display: none;">Switch Camera</button>
+                        <button id="stopButton" class="btn btn-danger" style="display: none;">Stop Camera</button>
+                    </div>
+                    <div id="result" class="mt-3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <!-- Load jsQR from a reliable CDN with fallback -->
+    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
+    <script>
+        // Check if jsQR loaded successfully
+        if (typeof jsQR === 'undefined') {
+            document.getElementById('result').innerHTML = 
+                '<div class="alert alert-danger">Error: QR scanner library failed to load. Please refresh the page.</div>';
+        }
+
+        let video = document.getElementById('video');
+        let canvas = document.getElementById('canvas');
+        let ctx = canvas.getContext('2d');
+        let mediaStream = null;
+        let currentCamera = 'environment';
+        let scanning = false;
+        
+        // Initialize scanner region
+        function initScanRegion() {
+            const scanRegion = document.getElementById('scanRegion');
+            if (!video.videoWidth) {
+                setTimeout(initScanRegion, 100);
+                return;
+            }
+            const size = Math.min(video.offsetWidth, video.offsetHeight) * 0.7;
+            
+            scanRegion.style.width = size + 'px';
+            scanRegion.style.height = size + 'px';
+            scanRegion.style.left = (video.offsetWidth - size) / 2 + 'px';
+            scanRegion.style.top = (video.offsetHeight - size) / 2 + 'px';
+            scanRegion.style.display = 'block';
+        }
+
+        async function startCamera() {
+            try {
+                if (mediaStream) {
+                    mediaStream.getTracks().forEach(track => track.stop());
+                }
+
+                const constraints = {
+                    video: {
+                        facingMode: currentCamera,
+                        width: { ideal: 1280 },
+                        height: { ideal: 720 }
+                    }
+                };
+
+                mediaStream = await navigator.mediaDevices.getUserMedia(constraints);
+                video.srcObject = mediaStream;
+                
+                video.onloadedmetadata = () => {
+                    video.play();
+                    canvas.width = video.videoWidth;
+                    canvas.height = video.videoHeight;
+                    document.getElementById('startButton').style.display = 'none';
+                    document.getElementById('stopButton').style.display = 'block';
+                    document.getElementById('switchCamera').style.display = 'block';
+                    initScanRegion();
+                    scanning = true;
+                    scanQRCode();
+                };
+            } catch (error) {
+                console.error('Error accessing camera:', error);
+                let errorMessage = 'Error accessing camera. ';
+                if (error.name === 'NotAllowedError') {
+                    errorMessage += 'Please grant camera permissions.';
+                } else if (error.name === 'NotFoundError') {
+                    errorMessage += 'No camera found.';
+                } else {
+                    errorMessage += error.message;
+                }
+                $('#result').html(`<div class="alert alert-danger">${errorMessage}</div>`);
+            }
+        }
+
+        function stopCamera() {
+            if (mediaStream) {
+                mediaStream.getTracks().forEach(track => track.stop());
+                video.srcObject = null;
+                document.getElementById('startButton').style.display = 'block';
+                document.getElementById('stopButton').style.display = 'none';
+                document.getElementById('switchCamera').style.display = 'none';
+                document.getElementById('scanRegion').style.display = 'none';
+                $('#result').html('');
+                scanning = false;
+            }
+        }
+
+        async function switchCamera() {
+            currentCamera = currentCamera === 'environment' ? 'user' : 'environment';
+            await startCamera();
+        }
+
+        function scanQRCode() {
+            if (!scanning) return;
+
+            if (video.readyState === video.HAVE_ENOUGH_DATA) {
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                
+                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                
+                try {
+                    const code = jsQR(imageData.data, imageData.width, imageData.height, {
+                        inversionAttempts: "dontInvert"
+                    });
+                    
+                    if (code) {
+                        $('#result').html('<div class="alert alert-success">Decoded Text: ' + code.data + '</div>');
+                        // Optional: Add a brief pause after successful scan
+                        scanning = false;
+                        setTimeout(() => {
+                            scanning = true;
+                            scanQRCode();
+                        }, 1500);
+                    } else {
+                        requestAnimationFrame(scanQRCode);
+                    }
+                } catch (error) {
+                    console.error('QR scanning error:', error);
+                    requestAnimationFrame(scanQRCode);
+                }
+            } else {
+                requestAnimationFrame(scanQRCode);
+            }
+        }
+
+        // Event Listeners
+        document.getElementById('startButton').addEventListener('click', startCamera);
+        document.getElementById('stopButton').addEventListener('click', stopCamera);
+        document.getElementById('switchCamera').addEventListener('click', switchCamera);
+
+        // Handle page visibility changes
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                stopCamera();
+            }
+        });
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            if (scanning) {
+                initScanRegion();
+            }
+        });
+    </script>
+}

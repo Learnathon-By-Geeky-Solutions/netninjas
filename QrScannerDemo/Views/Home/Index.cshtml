@@ -1,0 +1,57 @@
+﻿@{
+    ViewData["Title"] = "QR Code Scanner";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">QR Code Scanner</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2 mb-4">
+                        <a href="@Url.Action("Camera", "Home")" class="btn btn-success">Use Camera Scanner</a>
+                    </div>
+                    <form id="qrForm" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label for="qrCodeImage" class="form-label">Upload QR Code Image</label>
+                            <input type="file" class="form-control" id="qrCodeImage" name="qrCodeImage" accept="image/*" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Scan QR Code</button>
+                    </form>
+                    <div id="result" class="mt-3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#qrForm').on('submit', function (e) {
+                e.preventDefault();
+                var formData = new FormData(this);
+
+                $.ajax({
+                    url: '@Url.Action("ScanQRCode", "Home")',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        if (response.success) {
+                            $('#result').html('<div class="alert alert-success">Decoded Text: ' + response.decodedText + '</div>');
+                        } else {
+                            $('#result').html('<div class="alert alert-danger">' + response.errorMessage + '</div>');
+                        }
+                    },
+                    error: function () {
+                        $('#result').html('<div class="alert alert-danger">Error processing request</div>');
+                    }
+                });
+            });
+        });
+    </script>
+}

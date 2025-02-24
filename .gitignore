@@ -1,6 +1,10 @@
-*/bin
-*/obj
-*/*.github
-*/*.csproj
+QRCodeBasedMetroTicketingSystem/bin/
+QRCodeBasedMetroTicketingSystem/obj/
+.github
+.vs
+.csproj
 sujan-codes.sln
 QRCodeBasedMetroTicketingSystem.sln
+QrScannerDemo.sln
+QrScannerDemo/bin
+QrScannerDemo/obj
