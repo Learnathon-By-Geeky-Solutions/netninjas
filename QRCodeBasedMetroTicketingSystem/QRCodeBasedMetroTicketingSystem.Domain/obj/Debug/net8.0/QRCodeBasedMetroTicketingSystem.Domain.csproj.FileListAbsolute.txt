@@ -1,0 +1,12 @@
+F:\Web Development\Learnathon\netninjas\QRCodeBasedMetroTicketingSystem\QRCodeBasedMetroTicketingSystem.Domain\bin\Debug\net8.0\QRCodeBasedMetroTicketingSystem.Domain.deps.json
+F:\Web Development\Learnathon\netninjas\QRCodeBasedMetroTicketingSystem\QRCodeBasedMetroTicketingSystem.Domain\bin\Debug\net8.0\QRCodeBasedMetroTicketingSystem.Domain.dll
+F:\Web Development\Learnathon\netninjas\QRCodeBasedMetroTicketingSystem\QRCodeBasedMetroTicketingSystem.Domain\bin\Debug\net8.0\QRCodeBasedMetroTicketingSystem.Domain.pdb
+F:\Web Development\Learnathon\netninjas\QRCodeBasedMetroTicketingSystem\QRCodeBasedMetroTicketingSystem.Domain\obj\Debug\net8.0\QRCodeBasedMetroTicketingSystem.Domain.GeneratedMSBuildEditorConfig.editorconfig
+F:\Web Development\Learnathon\netninjas\QRCodeBasedMetroTicketingSystem\QRCodeBasedMetroTicketingSystem.Domain\obj\Debug\net8.0\QRCodeBasedMetroTicketingSystem.Domain.AssemblyInfoInputs.cache
+F:\Web Development\Learnathon\netninjas\QRCodeBasedMetroTicketingSystem\QRCodeBasedMetroTicketingSystem.Domain\obj\Debug\net8.0\QRCodeBasedMetroTicketingSystem.Domain.AssemblyInfo.cs
+F:\Web Development\Learnathon\netninjas\QRCodeBasedMetroTicketingSystem\QRCodeBasedMetroTicketingSystem.Domain\obj\Debug\net8.0\QRCodeBasedMetroTicketingSystem.Domain.csproj.CoreCompileInputs.cache
+F:\Web Development\Learnathon\netninjas\QRCodeBasedMetroTicketingSystem\QRCodeBasedMetroTicketingSystem.Domain\obj\Debug\net8.0\QRCodeBasedMetroTicketingSystem.Domain.sourcelink.json
+F:\Web Development\Learnathon\netninjas\QRCodeBasedMetroTicketingSystem\QRCodeBasedMetroTicketingSystem.Domain\obj\Debug\net8.0\QRCodeBasedMetroTicketingSystem.Domain.dll
+F:\Web Development\Learnathon\netninjas\QRCodeBasedMetroTicketingSystem\QRCodeBasedMetroTicketingSystem.Domain\obj\Debug\net8.0\refint\QRCodeBasedMetroTicketingSystem.Domain.dll
+F:\Web Development\Learnathon\netninjas\QRCodeBasedMetroTicketingSystem\QRCodeBasedMetroTicketingSystem.Domain\obj\Debug\net8.0\QRCodeBasedMetroTicketingSystem.Domain.pdb
+F:\Web Development\Learnathon\netninjas\QRCodeBasedMetroTicketingSystem\QRCodeBasedMetroTicketingSystem.Domain\obj\Debug\net8.0\ref\QRCodeBasedMetroTicketingSystem.Domain.dll
