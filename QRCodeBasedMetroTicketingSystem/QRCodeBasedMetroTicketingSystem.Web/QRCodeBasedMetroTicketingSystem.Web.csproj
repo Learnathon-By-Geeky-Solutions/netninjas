@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\QRCodeBasedMetroTicketingSystem.Application\QRCodeBasedMetroTicketingSystem.Application.csproj" />
     <ProjectReference Include="..\QRCodeBasedMetroTicketingSystem.Infrastructure\QRCodeBasedMetroTicketingSystem.Infrastructure.csproj" />
   </ItemGroup>
 

@@ -64,6 +64,28 @@ namespace QRCodeBasedMetroTicketingSystem.Infrastructure.Migrations
 
                     b.ToTable("Stations");
                 });
+
+            modelBuilder.Entity("QRCodeBasedMetroTicketingSystem.Domain.Entities.StationDistance", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("DistanceKm")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("FromStationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ToStationId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("StationDistances");
+                });
 #pragma warning restore 612, 618
         }
     }

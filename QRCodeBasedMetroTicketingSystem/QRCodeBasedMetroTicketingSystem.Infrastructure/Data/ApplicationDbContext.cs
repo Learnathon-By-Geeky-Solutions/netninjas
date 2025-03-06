@@ -15,5 +15,6 @@ namespace QRCodeBasedMetroTicketingSystem.Infrastructure.Data
         }
 
         public DbSet<Station> Stations { get; set; }
+        public DbSet<StationDistance> StationDistances { get; set; }
     }
 }

@@ -12,8 +12,8 @@ using QRCodeBasedMetroTicketingSystem.Infrastructure.Data;
 namespace QRCodeBasedMetroTicketingSystem.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250228064947_AddStationsTableToDb")]
-    partial class AddStationsTableToDb
+    [Migration("20250306215900_AddStationDistanceTable")]
+    partial class AddStationDistanceTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -47,15 +47,13 @@ namespace QRCodeBasedMetroTicketingSystem.Infrastructure.Migrations
                     b.Property<decimal>("Longitude")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("StationCode")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
 
                     b.Property<string>("StationName")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -68,6 +66,28 @@ namespace QRCodeBasedMetroTicketingSystem.Infrastructure.Migrations
                     b.HasKey("StationId");
 
                     b.ToTable("Stations");
+                });
+
+            modelBuilder.Entity("QRCodeBasedMetroTicketingSystem.Domain.Entities.StationDistance", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("DistanceKm")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("FromStationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ToStationId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("StationDistances");
                 });
 #pragma warning restore 612, 618
         }

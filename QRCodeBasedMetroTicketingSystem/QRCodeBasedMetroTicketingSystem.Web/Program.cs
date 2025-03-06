@@ -1,5 +1,10 @@
 using Microsoft.EntityFrameworkCore;
+using QRCodeBasedMetroTicketingSystem.Application.Services.Implementations;
+using QRCodeBasedMetroTicketingSystem.Application.Services.Interfaces;
 using QRCodeBasedMetroTicketingSystem.Infrastructure.Data;
+using QRCodeBasedMetroTicketingSystem.Infrastructure.Services.Implementations;
+using QRCodeBasedMetroTicketingSystem.Infrastructure.Services.Interfaces;
+using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +12,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect("localhost:6379"));
+
+builder.Services.AddScoped<IDistanceService, DistanceService>();
+builder.Services.AddScoped<IRedisCacheService, RedisCacheService>();
+
 
 var app = builder.Build();
 
