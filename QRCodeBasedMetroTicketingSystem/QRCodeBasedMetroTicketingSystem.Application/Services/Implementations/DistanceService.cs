@@ -38,11 +38,14 @@ namespace QRCodeBasedMetroTicketingSystem.Application.Services.Implementations
                     }
                 }
             }
+            const double Epsilon = 1e-9;
             Dictionary<int, double> cumlativeDistance = new Dictionary<int, double>();
             foreach (var station in stations)
             {
-                cumlativeDistance[station.StationId] = cumulativeDistances[station.StationId] == double.MaxValue ? -1 : cumulativeDistances[station.StationId];
-                //station.CumulativeDis = cumulativeDistances[station.Id] == double.MaxValue ? -1 : cumulativeDistances[station.Id];
+                double distance = cumulativeDistances[station.StationId];
+
+                cumlativeDistance[station.StationId] =
+                    Math.Abs(distance - double.MaxValue) < Epsilon ? -1 : distance;
             }
             return cumlativeDistance;
         }
