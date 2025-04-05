@@ -5,6 +5,7 @@
         IStationRepository StationRepository { get; }
         IStationDistanceRepository StationDistanceRepository { get; }
         ISettingsRepository SettingsRepository { get; }
+        IUserRepository UserRepository { get; }
 
         Task<int> SaveChangesAsync();
         Task BeginTransactionAsync();

@@ -158,8 +158,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // If all validations pass, submit the form
         if (isFullNameValid && isEmailValid && isPhoneValid && isNidValid && isPasswordValid && isConfirmPasswordValid && isTermsChecked) {
-            alert('Form submitted successfully!');
-            // form.submit();
+            signupForm.submit();
         }
     });
 
@@ -171,8 +170,7 @@ document.addEventListener('DOMContentLoaded', function() {
         updateFieldStatus(phone, isPhoneValid);
 
         if (isPhoneValid) {
-            alert('Form submitted successfully!');
-            // form.submit();
+            loginForm.submit();
         }
     });
 

@@ -11,6 +11,7 @@ namespace QRCodeBasedMetroTicketingSystem.Application.Mapping
             CreateMap<StationSummaryDto, Station>().ReverseMap();
             CreateMap<StationDistanceDto, StationDistance>().ReverseMap();
             CreateMap<SettingsDto, Settings>().ReverseMap();
+            CreateMap<RegisterUserDto, User>().ReverseMap();
         }
     }
 }

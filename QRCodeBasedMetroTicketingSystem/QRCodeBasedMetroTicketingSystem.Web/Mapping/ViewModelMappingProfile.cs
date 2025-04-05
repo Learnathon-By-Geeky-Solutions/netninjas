@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using QRCodeBasedMetroTicketingSystem.Application.DTOs;
 using QRCodeBasedMetroTicketingSystem.Web.Areas.Admin.ViewModels;
+using QRCodeBasedMetroTicketingSystem.Web.Models;
 
 namespace QRCodeBasedMetroTicketingSystem.Web.Mapping
 {
@@ -15,6 +16,7 @@ namespace QRCodeBasedMetroTicketingSystem.Web.Mapping
             CreateMap<StationDeletionDto, StationDeletionViewModel>().ReverseMap();
             CreateMap<SettingsDto, SettingsViewModel>().ReverseMap();
             CreateMap<FareAndDistancesDto, FareAndDistancesViewModel>().ReverseMap();
+            CreateMap<RegisterUserDto, RegisterUserViewModel>().ReverseMap();
         }
     }
 }

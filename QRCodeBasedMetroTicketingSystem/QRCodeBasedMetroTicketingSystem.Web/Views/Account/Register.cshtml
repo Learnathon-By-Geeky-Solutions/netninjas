@@ -1,0 +1,88 @@
+﻿@model RegisterUserViewModel
+
+@{
+    ViewData["Title"] = "Sign Up";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/auth.min.css" asp-append-version="true" />
+}
+
+<section class="auth-section py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6 col-xl-5">
+                <div class="card shadow-lg border-0">
+                    <div class="card-header bg-primary text-white text-center py-4">
+                        <h2 class="mb-0">Create Your Account</h2>
+                        <p class="mb-0 mt-2">Join Dhaka Metro Rail for easy, fast, and convenient travel</p>
+                    </div>
+                    <div class="card-body p-3 p-sm-4">
+                        <form asp-controller="Account" asp-action="Register" id="signupForm">
+                            <div class="mb-3">
+                                <label for="fullName" class="form-label">Full Name</label>
+                                <input asp-for="FullName" type="text" class="form-control" id="fullName" placeholder="Enter your full name" required>
+                                <span asp-validation-for="FullName" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email Address</label>
+                                <input asp-for="Email" type="email" class="form-control" id="email" placeholder="Enter your email address" required>
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="phone" class="form-label">Phone Number</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">+88</span>
+                                    <input asp-for="Phone" type="tel" class="form-control" id="phone" placeholder="Enter your phone number" required>
+                                </div>
+                                <span asp-validation-for="Phone" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="nid" class="form-label">NID Number</label>
+                                <input asp-for="NID" type="text" class="form-control" id="nid" placeholder="Enter your National ID number" required>
+                                <span asp-validation-for="NID" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <input asp-for="Password" type="password" class="form-control" id="password" placeholder="Create a password" required>
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="confirmPassword" class="form-label">Confirm Password</label>
+                                <input asp-for="ConfirmPassword" type="password" class="form-control" id="confirmPassword" placeholder="Confirm your password" required>
+                                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-4 form-check">
+                                <input asp-for="TermsAgreed" type="checkbox" class="form-check-input" id="termsCheck" required>
+                                <label class="form-check-label" for="termsCheck">
+                                    I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                                </label>
+                                <span asp-validation-for="TermsAgreed" class="text-danger d-block"></span>
+                            </div>
+
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-user-plus me-2"></i> Create Account
+                                </button>
+                            </div>
+                        </form>
+
+                        <div class="text-center mt-4">
+                            <p>Already have an account? <a asp-controller="Account" asp-action="Login">Login</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script src="~/js/auth.js" asp-append-version="true"></script>
+}
