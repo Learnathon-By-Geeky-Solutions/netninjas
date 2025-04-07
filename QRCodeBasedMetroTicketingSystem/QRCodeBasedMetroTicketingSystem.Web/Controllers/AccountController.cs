@@ -6,16 +6,34 @@ using QRCodeBasedMetroTicketingSystem.Web.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.AspNetCore.Mvc.Razor;
+using Microsoft.AspNetCore.Identity;
 
 namespace QRCodeBasedMetroTicketingSystem.Web.Controllers
 {
     public class AccountController : Controller
     {
         private readonly IUserService _userService;
+        private readonly ITokenService _tokenService;
+        private readonly IRazorViewEngine _viewEngine;
+        private readonly ITempDataProvider _tempDataProvider;
+        private readonly IServiceProvider _serviceProvider;
+        private readonly IEmailService _emailService;
 
-        public AccountController(IUserService userService)
+        public AccountController(IUserService userService, 
+            ITokenService tokenService,
+            IRazorViewEngine viewEngine,
+            ITempDataProvider tempDataProvider,
+            IServiceProvider serviceProvider,
+            IEmailService emailService)
         {
             _userService = userService;
+            _tokenService = tokenService;
+            _viewEngine = viewEngine;
+            _tempDataProvider = tempDataProvider;
+            _serviceProvider = serviceProvider;
+            _emailService = emailService;
         }
 
         [Route("Register")]
@@ -30,6 +48,7 @@ namespace QRCodeBasedMetroTicketingSystem.Web.Controllers
         }
 
         [HttpPost("Register")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterUserViewModel model)
         {
             if (!ModelState.IsValid)
@@ -43,7 +62,7 @@ namespace QRCodeBasedMetroTicketingSystem.Web.Controllers
                 return View(model);
             }
 
-            if (await _userService.CheckPhoneExistsAsync(model.Phone))
+            if (await _userService.CheckPhoneExistsAsync(model.PhoneNumber))
             {
                 ModelState.AddModelError("Phone", "Phone number is already registered");
                 return View(model);
@@ -53,8 +72,10 @@ namespace QRCodeBasedMetroTicketingSystem.Web.Controllers
 
             if (result.IsSuccess)
             {
+                await SendEmailVerificationMail(model.Email, model.FullName);
+                TempData["RegisteredEmail"] = model.Email;
                 TempData["SuccessMessage"] = result.Message;
-                return RedirectToAction("Login");
+                return RedirectToAction("VerificationEmailSent");
             }
             else
             {
@@ -91,16 +112,24 @@ namespace QRCodeBasedMetroTicketingSystem.Web.Controllers
                 return View(model);
             }
 
-            var result = await _userService.LoginUserAsync(model.Phone, model.Password);
+            var result = await _userService.LoginUserAsync(model.PhoneNumber, model.Password);
             if (result.IsSuccess)
             {
+                // Check if email is verified
+                if (!result.User.IsEmailVerified)
+                {
+                    await SendEmailVerificationMail(result.User.Email, result.User.FullName);
+                    TempData["RegisteredEmail"] = result.User.Email;
+                    TempData["InfoMessage"] = "Please verify your email before logging in.";
+                    return RedirectToAction("VerificationEmailSent");
+                }
+
                 // Create claims from JWT token data
                 var tokenHandler = new JwtSecurityTokenHandler();
-
                 var claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.NameIdentifier, result.UserId.ToString()),
-                    new Claim(ClaimTypes.Name, result.FullName),
+                    new Claim(ClaimTypes.NameIdentifier, result.User.Id.ToString()),
+                    new Claim(ClaimTypes.Name, result.User.FullName!),
                     new Claim(ClaimTypes.Role, "User"),
                     new Claim("JwtToken", result.Token)
                 };
@@ -146,6 +175,66 @@ namespace QRCodeBasedMetroTicketingSystem.Web.Controllers
             Response.Cookies.Delete("jwtToken");
 
             return RedirectToAction("Index", "Home");
+        }
+
+        [Route("VerificationEmailSent")]
+        public IActionResult VerificationEmailSent()
+        {
+            var email = TempData["RegisteredEmail"]?.ToString();
+            if (string.IsNullOrEmpty(email))
+                return RedirectToAction("Login", "Account");
+
+            return View();
+        }
+
+        [Route("VerifyEmail")]
+        public async Task<IActionResult> VerifyEmail(string email, string token)
+        {
+            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(token))
+            {
+                return BadRequest("Invalid verification information");
+            }
+
+            //var user = await _userManager.FindByIdAsync(userId.ToString());
+            //if (user == null)
+            //{
+            //    return NotFound("User not found");
+            //}
+
+            //// Check if token is valid
+            //var userToken = await _tokenService.GetValidTokenAsync(userId, "EmailVerification", token);
+            //if (userToken == null)
+            //{
+            //    return BadRequest("Invalid or expired verification token");
+            //}
+
+            //// Mark email as verified
+            //user.EmailVerified = true;
+            //user.UpdatedAt = DateTime.UtcNow;
+            //await _userManager.UpdateAsync(user);
+
+            // Mark token as used
+            //await _tokenService.MarkTokenAsUsedAsync(userToken.Id);
+
+            return RedirectToAction("Login", "Account");
+        }
+
+        [Route("EmailVerificationSuccess")]
+        public IActionResult EmailVerificationSuccess()
+        {
+            return View();
+        }
+
+        private async Task SendEmailVerificationMail(string email, string name)
+        {
+            // Generate verification token (valid for 24 hours)
+            string token = await _tokenService.GenerateEmailVerificationToken(email);
+
+            // Generate verification URL
+            var verificationUrl = Url.Action("VerifyEmail", "Account", new { email = email, token = token }, Request.Scheme);
+
+            // Send verification email
+            await _emailService.SendEmailVerificationAsync(email, name, verificationUrl!);
         }
     }
 }

@@ -13,6 +13,7 @@ namespace QRCodeBasedMetroTicketingSystem.Infrastructure.Data
         public DbSet<StationDistance> StationDistances { get; set; }
         public DbSet<Settings> Settings { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<UserToken> UserTokens { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -57,7 +58,7 @@ namespace QRCodeBasedMetroTicketingSystem.Infrastructure.Data
                 .IsUnique();
 
             modelBuilder.Entity<User>()
-                .HasIndex(s => s.Phone)
+                .HasIndex(s => s.PhoneNumber)
                 .IsUnique();
         }
     }

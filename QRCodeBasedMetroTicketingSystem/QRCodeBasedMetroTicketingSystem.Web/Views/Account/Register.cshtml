@@ -35,9 +35,9 @@
                                 <label for="phone" class="form-label">Phone Number</label>
                                 <div class="input-group">
                                     <span class="input-group-text">+88</span>
-                                    <input asp-for="Phone" type="tel" class="form-control" id="phone" placeholder="Enter your phone number" required>
+                                    <input asp-for="PhoneNumber" type="tel" class="form-control" id="phone" placeholder="Enter your phone number" required>
                                 </div>
-                                <span asp-validation-for="Phone" class="text-danger"></span>
+                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                             </div>
 
                             <div class="mb-3">
@@ -61,7 +61,7 @@
                             <div class="mb-4 form-check">
                                 <input asp-for="TermsAgreed" type="checkbox" class="form-check-input" id="termsCheck" required>
                                 <label class="form-check-label" for="termsCheck">
-                                    I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                                    I agree to the <a href="#" class="link">Terms of Service</a> and <a href="#" class="link">Privacy Policy</a>
                                 </label>
                                 <span asp-validation-for="TermsAgreed" class="text-danger d-block"></span>
                             </div>
@@ -74,7 +74,7 @@
                         </form>
 
                         <div class="text-center mt-4">
-                            <p>Already have an account? <a asp-controller="Account" asp-action="Login">Login</a></p>
+                            <p>Already have an account? <a asp-controller="Account" asp-action="Login" class="link">Login</a></p>
                         </div>
                     </div>
                 </div>

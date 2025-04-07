@@ -1,0 +1,108 @@
+﻿@model EmailVerificationModel
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Verify Your Email - Dhaka Metro Rail</title>
+    <style>
+        .btn-verification:hover {
+            background-color: #005a42;
+            transition: all 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8f9fa; color: #333333;">
+    <center>
+        <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px; background-color: #ffffff; border-spacing: 0; margin-top: 20px; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); border-radius: 5px;">
+            <!-- Header -->
+            <tr>
+                <td align="center" style="padding: 25px 0;">
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 10px;"><img src="~/images/metro-logo.png" alt="Metro Rail BD Logo" height="36" /><span style="color: #006a4e; font-size: 25px; font-weight: bold;">Dhaka Metro Rail</span></div>
+                </td>
+            </tr>
+
+            <!-- Sub-Header -->
+            <tr>
+                <td align="center" style="padding: 25px 0; background-color: #006a4e;">
+                    <img src="~/images/email-logo.png" alt="Email Verification" width="72" height="72" style="display: block;" />
+                    <h2 style="color: #fff; font-size: 20px; margin: 5px 0; text-align: center;">Verify Your Email Address</h2>
+                </td>
+            </tr>
+
+            <!-- Content -->
+            <tr>
+                <td style="padding: 25px;">
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                        <tr>
+                            <td>
+                                <p style="margin-bottom: 10px; font-size: 16px; line-height: 1.5; color: #555555;">Hello <b>@Model.FullName</b>,</p>
+                                <p style="font-size: 16px; line-height: 1.5; color: #555555; text-align: justify;">Thank you for creating an account with Dhaka Metro Rail. To complete your registration and activate your account, please verify your email address by clicking the button below:</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center" style="padding: 25px 0;">
+                                <!-- Verification Button -->
+                                <table border="0" cellpadding="0" cellspacing="0">
+                                    <tr>
+                                        <td align="center" bgcolor="#006a4e" style="border-radius: 5px;" class="btn-verification">
+                                            <a href="@Model.VerificationUrl" target="_blank" style="display: inline-block; padding: 13px 35px; font-size: 16px; color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: bold;">Verify Email Address</a>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p style="margin: 0 0 20px 0; font-size: 16px; line-height: 1.5; color: #555555;">If the button above doesn't work, you can also verify your email by copying and pasting the following link into your browser:</p>
+                                <p style="margin: 0 0 20px 0; font-size: 14px; line-height: 1.5; color: #006a4e; word-break: break-all; background-color: #f8f9fa; padding: 10px; border-radius: 5px; border: 1px solid #e9ecef;">@Model.VerificationUrl</p>
+                                <p style="margin: 0 0 20px 0; font-size: 16px; line-height: 1.5; color: #555555;">This verification link will expire in 24 hours for security reasons.</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 15px; background-color: rgba(0, 106, 78, 0.05); border-radius: 8px; margin-top: 20px;">
+                                <h3 style="color: #006a4e; font-size: 16px; margin: 0 0 10px 0;">Security Notice</h3>
+                                <p style="margin: 0; font-size: 14px; line-height: 1.5; color: #555555;">If you did not create an account with Dhaka Metro Rail, please ignore this email.</p>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+            <!-- What's Next Section -->
+            <tr>
+                <td style="padding: 0 25px 25px 25px;">
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                        <tr>
+                            <td>
+                                <h3 style="color: #006a4e; font-size: 18px; margin: 0 0 15px 0;">What's Next?</h3>
+                                <ul style="margin: 0 0 20px 0; padding-left: 20px; color: #555555;">
+                                    <li style="margin-bottom: 10px;">Add funds to your account</li>
+                                    <li style="margin-bottom: 10px;">Generate your first QR ticket</li>
+                                    <li style="margin-bottom: 0;">Enjoy hassle-free metro travel</li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+            <!-- Footer -->
+            <tr>
+                <td style="padding: 25px 0; background-color: #333333; border-radius: 0 0 5px 5px;">
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                        <tr>
+                            <td align="center">
+                                <p style="margin: 0 0 10px 0; font-size: 14px; line-height: 1.5; color: #ffffff; opacity: 0.8;">Need help? Contact our support team at <a href="mailto:support@dhakametrorail.gov.bd" style="color: #ffffff; text-decoration: underline;">support@dhakametrorail.gov.bd</a></p>
+                                <p style="margin: 0 0 10px 0; font-size: 14px; line-height: 1.5; color: #ffffff; opacity: 0.8;">Agargaon, Dhaka, Bangladesh</p>
+                                <p style="margin: 0; font-size: 12px; line-height: 1.5; color: #ffffff; opacity: 0.5;">&copy; 2025 Dhaka Metro Rail. All rights reserved.</p>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </center>
+</body>
+</html>

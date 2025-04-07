@@ -8,6 +8,7 @@ namespace QRCodeBasedMetroTicketingSystem.Application.Interfaces.Services
         Task<bool> CheckEmailExistsAsync(string email);
         Task<bool> CheckPhoneExistsAsync(string phone);
         Task<Result> RegisterUserAsync(RegisterUserDto registerDto);
-        Task<(bool IsSuccess, int UserId, string FullName, string Token, string Message)> LoginUserAsync(string phoneNumber, string password);
+        Task<(bool IsSuccess, UserDto User, string Token, string Message)> LoginUserAsync(string phoneNumber, string password);
+        Task<UserDto?> GetUserByIdAsync(int UserId);
     }
 }

@@ -4,21 +4,15 @@
     align-items: center;
 
     .card {
-        border-radius: 10px;
+        border-radius: 10px !important;
 
         .card-header {
             background: linear-gradient(135deg, rgba(0, 106, 78, 0.9), rgba(0, 106, 78, 0.7)) !important;
             border-bottom: none;
         }
-    }
 
-    a {
-        color: var(--primary-color) !important;
-        text-decoration: none;
-        font-weight: 600;
-    
-        &:hover {
-            text-decoration: underline;
+        .card-body {
+            color: var(--dark-color);
         }
     }
 
@@ -34,11 +28,10 @@
         .form-control:not(:focus):not(:placeholder-shown) {
             background-color: rgba(40, 167, 69, 0.1) !important;
         }
-
         /* Password Toggle */
         .password-container {
             input {
-                border-radius: 5px  !important;
+                border-radius: 5px !important;
             }
 
             .password-toggle {
@@ -50,22 +43,237 @@
                 cursor: pointer;
                 z-index: 5;
                 transition: all 0.3s ease-in-out;
-        
+
                 &:hover {
                     color: var(--primary-color);
                 }
             }
         }
-        
-
         /* Subtle animation */
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .login-section .card {
             animation: fadeIn 0.5s ease forwards;
         }
+    }
+}
+
+/* Email Verification sent Specific Styles */
+.email-verification-sent {
+    .card-body {
+        padding: 30px;
+    }
+
+    .email-icon {
+        width: 120px;
+        height: 120px;
+        background-color: rgba(0, 106, 78, 0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+        color: var(--primary-color);
+        font-size: 3.5rem;
+        animation: pulse 2s infinite;
+    }
+
+    .email-highlight {
+        font-weight: bold;
+        color: var(--primary-color);
+    }
+
+    .verification-tips {
+        background-color: rgba(0, 106, 78, 0.05);
+        border-radius: 10px;
+        padding: 15px;
+        margin-top: 20px;
+
+        h5 {
+            color: var(--primary-color);
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+
+        ul {
+            padding-left: 20px;
+            margin-bottom: 0;
+
+            li {
+                margin-bottom: 5px;
+                color: var(--gray-color);
+                font-size: 0.9rem;
+                text-align: left;
+            }
+        }
+    }
+    /* Responsive Adjustments */
+    @media (max-width: 576px) {
+        .card-body {
+            padding: 20px;
+        }
+
+        .email-icon {
+            width: 100px;
+            height: 100px;
+            font-size: 3rem;
+        }
+    }
+}
+
+
+/* Email Verification success Specific Styles */
+/* Confetti Animation */
+.confetti {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: var(--primary-color);
+    opacity: 0.8;
+    animation: confetti-fall 3s ease-in-out infinite;
+
+    &:nth-child(2n) {
+        background-color: var(--secondary-color);
+    }
+
+    &:nth-child(3n) {
+        background-color: #ffb81c;
+    }
+
+    &:nth-child(4n) {
+        background-color: #3498db;
+    }
+}
+
+@keyframes confetti-fall {
+    0% {
+        transform: translateY(-100px) rotate(0deg);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(100px) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+.email-verification-success {
+    .card-body {
+        padding: 40px 30px;
+    }
+    /* Success Icon */
+    .success-icon {
+        width: 120px;
+        height: 120px;
+        background-color: rgba(0, 106, 78, 0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+        color: var(--primary-color);
+        font-size: 5rem;
+        position: relative;
+        animation: pulse 2s infinite;
+
+        &::after {
+            content: '';
+            position: absolute;
+            width: 140px;
+            height: 140px;
+            border: 2px dashed var(--primary-color);
+            border-radius: 50%;
+            opacity: 0.3;
+        }
+    }
+    /* Next Steps Section */
+    .next-steps {
+        background-color: rgba(0, 106, 78, 0.05);
+        border-radius: 10px;
+        padding: 15px;
+        margin-top: 20px;
+
+        h5 {
+            color: var(--primary-color);
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+
+        ul {
+            padding-left: 20px;
+            margin-bottom: 0;
+
+            li {
+                margin-bottom: 5px;
+                color: var(--gray-color);
+                font-size: 0.9rem;
+                text-align: left;
+            }
+        }
+    }
+    /* Countdown */
+    .countdown-container {
+        text-align: center;
+        color: var(--gray-color);
+        font-size: 0.9rem;
+
+        .countdown {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+    }
+    
+
+    @keyframes confetti-fall {
+        0% {
+            transform: translateY(-100px) rotate(0deg);
+            opacity: 1;
+        }
+
+        100% {
+            transform: translateY(100px) rotate(360deg);
+            opacity: 0;
+        }
+    }
+    /* Responsive Adjustments */
+    @media (max-width: 576px) {
+        .card-body {
+            padding: 30px 20px;
+        }
+
+        .success-icon {
+            width: 100px;
+            height: 100px;
+            font-size: 4rem;
+        }
+
+        .success-icon::after {
+            width: 120px;
+            height: 120px;
+        }
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
     }
 }

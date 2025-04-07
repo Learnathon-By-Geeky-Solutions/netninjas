@@ -14,5 +14,9 @@
   {
     "outputFile": "wwwroot/css/map-and-routes.css",
     "inputFile": "wwwroot/css/map-and-routes.scss"
+  },
+  {
+    "outputFile": "wwwroot/css/auth.css",
+    "inputFile": "wwwroot/css/auth.scss"
   }
 ]

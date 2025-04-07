@@ -16,9 +16,9 @@ namespace QRCodeBasedMetroTicketingSystem.Infrastructure.Repositories
             return await _dbSet.AnyAsync(u => u.Email == email);
         }
 
-        public async Task<bool> CheckPhoneExistsAsync(string phone)
+        public async Task<bool> CheckPhoneExistsAsync(string phoneNumber)
         {
-            return await _dbSet.AnyAsync(u => u.Phone == phone);
+            return await _dbSet.AnyAsync(u => u.PhoneNumber == phoneNumber);
         }
 
         public async Task AddUserAsync(User user)
@@ -26,9 +26,14 @@ namespace QRCodeBasedMetroTicketingSystem.Infrastructure.Repositories
             await _dbSet.AddAsync(user);
         }
 
-        public async Task<User?> GetUserByPhoneAsync(string phone)
+        public async Task<User?> GetUserByPhoneAsync(string phoneNumber)
         {
-            return await _dbSet.FirstOrDefaultAsync(u => u.Phone == phone);
+            return await _dbSet.FirstOrDefaultAsync(u => u.PhoneNumber == phoneNumber);
+        }
+
+        public async Task<User?> GetUserByIdAsync(int id)
+        {
+            return await _dbSet.FindAsync(id);
         }
     }
 }

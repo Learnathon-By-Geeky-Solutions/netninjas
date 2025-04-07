@@ -1,0 +1,97 @@
+﻿@{
+    ViewData["Title"] = "Email Verification Success";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/auth.min.css" asp-append-version="true" />
+}
+
+<!-- Confetti Animation -->
+<div id="confetti-container"></div>
+
+<section class="auth-section email-verification-success py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6 col-xl-5">
+                <div class="card shadow-lg border-0">
+                    <div class="card-header bg-primary text-white text-center py-4">
+                        <h2 class="mb-0">Email Verified Successfully!</h2>
+                        <p class="mb-0 mt-2">Your account is now active</p>
+                    </div>
+                    <div class="card-body text-center">
+                        <!-- Success Icon -->
+                        <div class="success-icon mb-4">
+                            <i class="fas fa-check"></i>
+                        </div>
+
+                        <h3 class="mb-3">Congratulations!</h3>
+                        <p class="mb-4">Your email address has been successfully verified. Your Dhaka Metro Rail account is now active and ready to use.</p>
+
+                        <div class="d-grid gap-3">
+                            <a asp-controller="Account" asp-action="Login" class="btn btn-primary">
+                                <i class="fas fa-sign-in-alt me-2"></i> Continue to Login
+                            </a>
+                        </div>
+
+                        <!-- Next Steps -->
+                        <div class="next-steps mt-4">
+                            <h5><i class="fas fa-list-check me-2"></i> What's Next?</h5>
+                            <ul>
+                                <li>Add funds to your account</li>
+                                <li>Generate your first QR ticket</li>
+                                <li>Enjoy hassle-free metro travel</li>
+                            </ul>
+                        </div>
+
+                        <!-- Countdown -->
+                        <div class="countdown-container mt-3">
+                            <p>You will be redirected to the login page in <span id="countdown" class="countdown">10</span> seconds</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        // Countdown timer
+        let countdownTime = 15;
+        const countdownElement = document.getElementById('countdown');
+
+        const countdownInterval = setInterval(function() {
+            countdownTime--;
+            countdownElement.textContent = countdownTime;
+
+            if (countdownTime <= 0) {
+                clearInterval(countdownInterval);
+                window.location.href = '/login';
+            }
+        }, 1000);
+
+        // Create confetti animation
+        function createConfetti() {
+            const container = document.getElementById('confetti-container');
+            const containerRect = container.getBoundingClientRect();
+
+            for (let i = 0; i < 70; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+
+                // Random position
+                const left = Math.random() * containerRect.width;
+                const delay = Math.random() * 3;
+                const duration = 2 + Math.random() * 2;
+
+                confetti.style.left = left + 'px';
+                confetti.style.animationDelay = delay + 's';
+                confetti.style.animationDuration = duration + 's';
+
+                container.appendChild(confetti);
+            }
+        }
+
+        createConfetti();
+    </script>
+}

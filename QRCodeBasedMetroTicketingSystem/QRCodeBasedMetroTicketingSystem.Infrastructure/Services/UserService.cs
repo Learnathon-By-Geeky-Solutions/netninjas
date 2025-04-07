@@ -27,9 +27,9 @@ namespace QRCodeBasedMetroTicketingSystem.Infrastructure.Services
             return await _unitOfWork.UserRepository.CheckEmailExistsAsync(email);
         }
 
-        public async Task<bool> CheckPhoneExistsAsync(string phone)
+        public async Task<bool> CheckPhoneExistsAsync(string phoneNumber)
         {
-            return await _unitOfWork.UserRepository.CheckPhoneExistsAsync(BdCountryCode + phone);
+            return await _unitOfWork.UserRepository.CheckPhoneExistsAsync(BdCountryCode + phoneNumber);
         }
 
         public async Task<Result> RegisterUserAsync(RegisterUserDto registerDto)
@@ -40,15 +40,15 @@ namespace QRCodeBasedMetroTicketingSystem.Infrastructure.Services
                 {
                     FullName = registerDto.FullName,
                     Email = registerDto.Email,
-                    Phone = BdCountryCode + registerDto.Phone,
+                    PhoneNumber = BdCountryCode + registerDto.PhoneNumber,
                     NID = registerDto.NID,
                     PasswordHash = BCrypt.Net.BCrypt.HashPassword(registerDto.Password),
                 };
 
                 await _unitOfWork.UserRepository.AddUserAsync(user);
                 await _unitOfWork.SaveChangesAsync();
-
-                return Result.Success("Account created successfully! Please login.");
+                
+                return Result.Success("Account created successfully!");
             }
             catch (Exception ex)
             {
@@ -56,19 +56,31 @@ namespace QRCodeBasedMetroTicketingSystem.Infrastructure.Services
             }
         }
 
-        public async Task<(bool IsSuccess, int UserId, string FullName, string Token, string Message)> LoginUserAsync(string phoneNumber, string password)
+        public async Task<(bool IsSuccess, UserDto User, string Token, string Message)> LoginUserAsync(string phoneNumber, string password)
         {
             var user = await _unitOfWork.UserRepository.GetUserByPhoneAsync(BdCountryCode + phoneNumber);
+            var userDto = _mapper.Map<UserDto>(user);
 
             if (user == null || !BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
             {
-                return (false, 0, string.Empty, string.Empty, "Invalid email or password");
+                return (false, userDto, string.Empty, "Invalid email or password");
+            }
+
+            if (!user.IsEmailVerified)
+            {
+                return (true, userDto, string.Empty, "Verify Email.");
             }
 
             // Generate JWT token
-            var token = _jwtService.GenerateToken(user.Id.ToString(), user.Phone, role);
+            var token = _jwtService.GenerateToken(user.Id.ToString(), user.PhoneNumber, role);
 
-            return (true, user.Id, user.FullName, token, "Login successful!");
+            return (true, userDto, token, "Login successful!");
+        }
+
+        public async Task<UserDto?> GetUserByIdAsync(int id)
+        {
+            var user = await _unitOfWork.UserRepository.GetUserByIdAsync(id);
+            return _mapper.Map<UserDto>(user);
         }
     }
 }

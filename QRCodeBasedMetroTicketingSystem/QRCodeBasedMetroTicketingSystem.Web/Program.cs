@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using QRCodeBasedMetroTicketingSystem.Application.Interfaces.Repositories;
 using QRCodeBasedMetroTicketingSystem.Application.Interfaces.Services;
 using QRCodeBasedMetroTicketingSystem.Application.Mapping;
@@ -9,6 +7,7 @@ using QRCodeBasedMetroTicketingSystem.Infrastructure.Data;
 using QRCodeBasedMetroTicketingSystem.Infrastructure.Repositories;
 using QRCodeBasedMetroTicketingSystem.Infrastructure.Services;
 using QRCodeBasedMetroTicketingSystem.Web.Mapping;
+using QRCodeBasedMetroTicketingSystem.Web.Services;
 using StackExchange.Redis;
 using System.Text;
 
@@ -52,6 +51,7 @@ builder.Services.AddScoped<IStationRepository, StationRepository>();
 builder.Services.AddScoped<IStationDistanceRepository, StationDistanceRepository>();
 builder.Services.AddScoped<ISettingsRepository, SettingsRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserTokenRepository, UserTokenRepository>();
 
 // Register other services
 builder.Services.AddScoped<ICacheService, RedisCacheService>();
@@ -62,6 +62,9 @@ builder.Services.AddScoped<IFareCalculationService, FareCalculationService>();
 builder.Services.AddScoped<IFareAndDistanceService, FareAndDistanceService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IJwtService, JwtService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IRazorViewToStringRenderer, RazorViewToStringRenderer>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 // Add authorization
 builder.Services.AddAuthorization();

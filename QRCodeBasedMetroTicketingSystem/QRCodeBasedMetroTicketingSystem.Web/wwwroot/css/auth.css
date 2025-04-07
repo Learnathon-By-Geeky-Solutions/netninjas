@@ -1,22 +1,17 @@
-.auth-section {
+﻿.auth-section {
   background-color: var(--light-color);
   display: flex;
   align-items: center;
 }
 .auth-section .card {
-  border-radius: 10px;
+  border-radius: 10px !important;
 }
 .auth-section .card .card-header {
   background: linear-gradient(135deg, rgba(0, 106, 78, 0.9), rgba(0, 106, 78, 0.7)) !important;
   border-bottom: none;
 }
-.auth-section a {
-  color: var(--primary-color) !important;
-  text-decoration: none;
-  font-weight: 600;
-}
-.auth-section a:hover {
-  text-decoration: underline;
+.auth-section .card .card-body {
+  color: var(--dark-color);
 }
 .auth-section form input {
   border-radius: 5px;
@@ -27,9 +22,6 @@
 .auth-section #loginForm {
   /* Password Toggle */
   /* Subtle animation */
-}
-.auth-section #loginForm .form-control:not(:focus):not(:-moz-placeholder-shown) {
-  background-color: rgba(40, 167, 69, 0.1) !important;
 }
 .auth-section #loginForm .form-control:not(:focus):not(:placeholder-shown) {
   background-color: rgba(40, 167, 69, 0.1) !important;
@@ -62,4 +54,189 @@
 }
 .auth-section #loginForm .login-section .card {
   animation: fadeIn 0.5s ease forwards;
+}
+
+/* Email Verification sent Specific Styles */
+.email-verification-sent {
+  /* Responsive Adjustments */
+}
+.email-verification-sent .card-body {
+  padding: 30px;
+}
+.email-verification-sent .email-icon {
+  width: 120px;
+  height: 120px;
+  background-color: rgba(0, 106, 78, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  color: var(--primary-color);
+  font-size: 3.5rem;
+  animation: pulse 2s infinite;
+}
+.email-verification-sent .email-highlight {
+  font-weight: bold;
+  color: var(--primary-color);
+}
+.email-verification-sent .verification-tips {
+  background-color: rgba(0, 106, 78, 0.05);
+  border-radius: 10px;
+  padding: 15px;
+  margin-top: 20px;
+}
+.email-verification-sent .verification-tips h5 {
+  color: var(--primary-color);
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+.email-verification-sent .verification-tips ul {
+  padding-left: 20px;
+  margin-bottom: 0;
+}
+.email-verification-sent .verification-tips ul li {
+  margin-bottom: 5px;
+  color: var(--gray-color);
+  font-size: 0.9rem;
+  text-align: left;
+}
+@media (max-width: 576px) {
+  .email-verification-sent .card-body {
+    padding: 20px;
+  }
+  .email-verification-sent .email-icon {
+    width: 100px;
+    height: 100px;
+    font-size: 3rem;
+  }
+}
+
+/* Email Verification success Specific Styles */
+/* Confetti Animation */
+.confetti {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: var(--primary-color);
+  opacity: 0.8;
+  animation: confetti-fall 3s ease-in-out infinite;
+}
+.confetti:nth-child(2n) {
+  background-color: var(--secondary-color);
+}
+.confetti:nth-child(3n) {
+  background-color: #ffb81c;
+}
+.confetti:nth-child(4n) {
+  background-color: #3498db;
+}
+
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(-100px) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100px) rotate(360deg);
+    opacity: 0;
+  }
+}
+.email-verification-success {
+  /* Success Icon */
+  /* Next Steps Section */
+  /* Countdown */
+  /* Responsive Adjustments */
+}
+.email-verification-success .card-body {
+  padding: 40px 30px;
+}
+.email-verification-success .success-icon {
+  width: 120px;
+  height: 120px;
+  background-color: rgba(0, 106, 78, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  color: var(--primary-color);
+  font-size: 5rem;
+  position: relative;
+  animation: pulse 2s infinite;
+}
+.email-verification-success .success-icon::after {
+  content: "";
+  position: absolute;
+  width: 140px;
+  height: 140px;
+  border: 2px dashed var(--primary-color);
+  border-radius: 50%;
+  opacity: 0.3;
+}
+.email-verification-success .next-steps {
+  background-color: rgba(0, 106, 78, 0.05);
+  border-radius: 10px;
+  padding: 15px;
+  margin-top: 20px;
+}
+.email-verification-success .next-steps h5 {
+  color: var(--primary-color);
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+.email-verification-success .next-steps ul {
+  padding-left: 20px;
+  margin-bottom: 0;
+}
+.email-verification-success .next-steps ul li {
+  margin-bottom: 5px;
+  color: var(--gray-color);
+  font-size: 0.9rem;
+  text-align: left;
+}
+.email-verification-success .countdown-container {
+  text-align: center;
+  color: var(--gray-color);
+  font-size: 0.9rem;
+}
+.email-verification-success .countdown-container .countdown {
+  font-weight: bold;
+  color: var(--primary-color);
+}
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(-100px) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100px) rotate(360deg);
+    opacity: 0;
+  }
+}
+@media (max-width: 576px) {
+  .email-verification-success .card-body {
+    padding: 30px 20px;
+  }
+  .email-verification-success .success-icon {
+    width: 100px;
+    height: 100px;
+    font-size: 4rem;
+  }
+  .email-verification-success .success-icon::after {
+    width: 120px;
+    height: 120px;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
 }

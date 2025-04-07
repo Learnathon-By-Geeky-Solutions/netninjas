@@ -14,10 +14,10 @@ namespace QRCodeBasedMetroTicketingSystem.Application.DTOs
 
         [Required(ErrorMessage = "Phone number is required")]
         [RegularExpression(@"^01[3-9]\d{8}$", ErrorMessage = "Phone number must be a valid Bangladesh mobile number")]
-        public string Phone { get; set; }
+        public string PhoneNumber { get; set; }
 
         [Required(ErrorMessage = "NID number is required")]
-        [RegularExpression(@"^\d{10,}$", ErrorMessage = "NID must contain only numbers and be at least 10 digits long")]
+        [RegularExpression(@"^\d{10}$|^\d{17}$", ErrorMessage = "NID must be either 10 or 17 digits long and contain only numbers")]
         public string NID { get; set; }
 
         [Required(ErrorMessage = "Password is required")]

@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function validateNid(value) {
-        return /^\d{10,}$/.test(value.trim());
+        return /^\d{10}$|^\d{17}$/.test(value.trim());
     }
 
     function validatePassword(value) {
@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     feedback.textContent = 'Please enter a valid Bangladeshi phone number (11 digits starting with 01)';
                     break;
                 case 'nid':
-                    feedback.textContent = 'NID must contain only numbers and be at least 10 digits long';
+                    feedback.textContent = 'NID must be either 10 or 17 digits long and contain only numbers';
                     break;
                 case 'password':
                     feedback.textContent = 'Password must be at least 8 characters with at least one letter and one number';

@@ -1,0 +1,87 @@
+﻿@{
+    ViewData["Title"] = "Verification Email Sent";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/auth.min.css" asp-append-version="true" />
+}
+
+<section class="auth-section email-verification-sent py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6 col-xl-5">
+                <div class="card shadow-lg border-0">
+                    <div class="card-header bg-primary text-white text-center py-4">
+                        <h2 class="mb-0">Verify Your Email</h2>
+                        <p class="mb-0 mt-2">One more step to complete your registration</p>
+                    </div>
+                    <div class="card-body text-center">
+                        <!-- Email Icon -->
+                        <div class="email-icon mb-4">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+
+                        <h3 class="mb-3">Check Your Email</h3>
+                        <p class="mb-4">We've sent a verification link to <span class="email-highlight">@TempData["RegisteredEmail"]</span></p>
+                        <p class="mb-4">Please check your inbox and click on the verification link to activate your account.</p>
+
+                        <div class="d-grid gap-3">
+                            <button id="resendBtn" class="btn btn-primary">
+                                <i class="fas fa-paper-plane me-2"></i> Resend Email
+                                <span id="countdown" class="ms-2 d-none">(60s)</span>
+                            </button>
+                        </div>
+
+                        <!-- Verification Tips -->
+                        <div class="verification-tips mt-4">
+                            <h5><i class="fas fa-lightbulb me-2"></i> Tips:</h5>
+                            <ul>
+                                <li>Check your spam or junk folder if you don't see the email in your inbox.</li>
+                                <li>The verification link will expire in 24 hours.</li>
+                                <li>Make sure your email address was entered correctly.</li>
+                            </ul>
+                        </div>
+
+                        <div class="mt-4">
+                            <a asp-controller="Account" asp-action="Login" class="link">
+                                <i class="fas fa-arrow-left me-1"></i> Back to Login
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        // Resend email functionality with countdown
+        const resendBtn = document.getElementById('resendBtn');
+        const countdownSpan = document.getElementById('countdown');
+        let countdownTime = 60;
+        let countdownInterval;
+
+        resendBtn.addEventListener('click', function() {
+            // Simulate sending email
+            alert('Verification email has been resent. Please check your inbox.');
+
+            // Disable button and start countdown
+            resendBtn.disabled = true;
+            countdownSpan.classList.remove('d-none');
+            countdownSpan.textContent = `(${countdownTime}s)`;
+
+            countdownInterval = setInterval(function() {
+                countdownTime--;
+                countdownSpan.textContent = `(${countdownTime}s)`;
+
+                if (countdownTime <= 0) {
+                    clearInterval(countdownInterval);
+                    resendBtn.disabled = false;
+                    countdownSpan.classList.add('d-none');
+                    countdownTime = 60;
+                }
+            }, 1000);
+        });
+    </script>
+}
