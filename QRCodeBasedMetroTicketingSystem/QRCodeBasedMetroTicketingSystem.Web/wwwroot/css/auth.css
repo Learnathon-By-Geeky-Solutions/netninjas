@@ -89,7 +89,7 @@
 .email-verification-sent .verification-tips h5 {
   color: var(--primary-color);
   font-size: 1rem;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 .email-verification-sent .verification-tips ul {
   padding-left: 20px;
@@ -99,7 +99,7 @@
   margin-bottom: 5px;
   color: var(--gray-color);
   font-size: 0.9rem;
-  text-align: left;
+  text-align: justify;
 }
 @media (max-width: 576px) {
   .email-verification-sent .card-body {
@@ -183,7 +183,7 @@
 .email-verification-success .next-steps h5 {
   color: var(--primary-color);
   font-size: 1rem;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 .email-verification-success .next-steps ul {
   padding-left: 20px;
@@ -193,7 +193,7 @@
   margin-bottom: 5px;
   color: var(--gray-color);
   font-size: 0.9rem;
-  text-align: left;
+  text-align: justify;
 }
 .email-verification-success .countdown-container {
   text-align: center;
@@ -226,6 +226,62 @@
   .email-verification-success .success-icon::after {
     width: 120px;
     height: 120px;
+  }
+}
+
+.email-verification-failed {
+  /* Error Icon */
+  /* Possible Reasons Section */
+}
+.email-verification-failed .card-body {
+  padding: 30px;
+}
+.email-verification-failed .card .card-header {
+  background: linear-gradient(135deg, rgba(220, 53, 69, 0.9), rgba(220, 53, 69, 0.7)) !important;
+}
+.email-verification-failed .error-icon {
+  width: 120px;
+  height: 120px;
+  background-color: rgba(220, 53, 69, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  color: var(--error-color);
+  font-size: 4rem;
+  animation: shake 0.8s ease-in-out;
+}
+.email-verification-failed .possible-reasons {
+  background-color: rgba(220, 53, 69, 0.05);
+  border-radius: 10px;
+  padding: 15px;
+  margin-top: 20px;
+}
+.email-verification-failed .possible-reasons h5 {
+  color: var(--error-color);
+  font-size: 1rem;
+  margin-bottom: 15px;
+}
+.email-verification-failed .possible-reasons ul {
+  padding-left: 20px;
+  margin-bottom: 0;
+}
+.email-verification-failed .possible-reasons ul li {
+  margin-bottom: 5px;
+  color: var(--gray-color);
+  font-size: 0.9rem;
+  text-align: justify;
+}
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-5px);
+  }
+  20%, 40%, 60%, 80% {
+    transform: translateX(5px);
   }
 }
 

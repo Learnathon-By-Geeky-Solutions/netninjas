@@ -1,4 +1,5 @@
-﻿using QRCodeBasedMetroTicketingSystem.Application.Interfaces.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
+using QRCodeBasedMetroTicketingSystem.Application.Interfaces.Repositories;
 using QRCodeBasedMetroTicketingSystem.Application.Interfaces.Services;
 using QRCodeBasedMetroTicketingSystem.Domain.Entities;
 
@@ -42,21 +43,9 @@ namespace QRCodeBasedMetroTicketingSystem.Infrastructure.Services
             return token;
         }
 
-        public async Task<bool> ValidateTokenAsync(string email, TokenType tokenType, string token)
+        public async Task<UserToken?> GetValidTokenAsync(string email, TokenType tokenType, string token)
         {
-            var userToken = await _unitOfWork.UserTokenRepository.GetTokenByEmailAsync(email);
-
-            return userToken != null && userToken.Email == email && userToken.Token == token && userToken.Type == tokenType && !userToken.IsUsed && userToken.ExpiryDate > DateTime.UtcNow;
-        }
-
-        public async Task MarkTokenAsUsedAsync(string email)
-        {
-            var userToken = await _unitOfWork.UserTokenRepository.GetTokenByEmailAsync(email);
-            if (userToken != null)
-            {
-                userToken.IsUsed = true;
-                await _unitOfWork.SaveChangesAsync();
-            }
+            return await _unitOfWork.UserTokenRepository.GetTokenAsync(email, tokenType, token);
         }
     }
 }

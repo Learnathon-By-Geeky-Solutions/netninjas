@@ -57,31 +57,124 @@
 @section Scripts {
     <script>
         // Resend email functionality with countdown
-        const resendBtn = document.getElementById('resendBtn');
-        const countdownSpan = document.getElementById('countdown');
-        let countdownTime = 60;
-        let countdownInterval;
+        $(document).ready(function () {
+            var countdownTime = 60;
+            var countdownInterval;
 
-        resendBtn.addEventListener('click', function() {
-            // Simulate sending email
-            alert('Verification email has been resent. Please check your inbox.');
+            function startCountdown() {
+                $('#resendBtn').prop('disabled', true);
+                $('#countdown').removeClass('d-none').text(`(${countdownTime}s)`);
 
-            // Disable button and start countdown
-            resendBtn.disabled = true;
-            countdownSpan.classList.remove('d-none');
-            countdownSpan.textContent = `(${countdownTime}s)`;
+                countdownInterval = setInterval(function () {
+                    countdownTime--;
+                    $('#countdown').text(`(${countdownTime}s)`);
 
-            countdownInterval = setInterval(function() {
-                countdownTime--;
-                countdownSpan.textContent = `(${countdownTime}s)`;
+                    if (countdownTime <= 0) {
+                        clearInterval(countdownInterval);
+                        $('#resendBtn').prop('disabled', false);
+                        $('#countdown').addClass('d-none');
+                        countdownTime = 60;
+                    }
+                }, 1000);
+            }
 
-                if (countdownTime <= 0) {
-                    clearInterval(countdownInterval);
-                    resendBtn.disabled = false;
-                    countdownSpan.classList.add('d-none');
-                    countdownTime = 60;
-                }
-            }, 1000);
+            // Start countdown on page load
+            startCountdown();
+
+            $('#resendBtn').on('click', function () {
+                var btn = $(this);
+
+                // Save original button text and show loading
+                var originalText = btn.html();
+                btn.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Sending...');
+                btn.prop('disabled', true);
+
+                // Get email and CSRF token
+                var email = $('.email-highlight').text();
+                var token = $('input[name="__RequestVerificationToken"]').val();
+
+                // Make AJAX call to resend verification email
+                $.ajax({
+                    url: '/ResendVerificationEmail',
+                    type: 'POST',
+                    data: { email: email },
+                    headers: { 'RequestVerificationToken': token },
+                    beforeSend: function (xhr) { 
+                        xhr.setRequestHeader("X-CSRF-TOKEN", token);
+                    },
+                    success: function(response) {
+                        // Restore button text
+                        btn.html(originalText);
+
+                        // Remove any existing notification
+                        $('#notificationToast').remove();
+
+                        // Create temporary div to hold the notification
+                        var notificationDiv = $('<div>', {
+                            class: 'alert alert-success alert-dismissible fade show position-fixed top-0 end-0',
+                            role: 'alert',
+                            id: 'notificationToast',
+                            style: 'top: 80px!important; right: 30px!important; z-index: 100'
+                        });
+
+                        // Add message and close button
+                        notificationDiv.html(
+                            response.message || 'Verification email has been resent. Please check your inbox.' +
+                            '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>'
+                        );
+
+                        // Add to main div
+                        $('main').append(notificationDiv);
+
+                        // Show toast
+                        const toast = new bootstrap.Toast(document.getElementById('notificationToast'), {
+                            autohide: true,
+                            delay: 5000
+                        });
+                        toast.show();
+
+                        // Restart countdown
+                        clearInterval(countdownInterval);
+                        countdownTime = 60;
+                        startCountdown();
+                    },
+                    error: function(xhr) {
+                        // Handle error response
+                        var message = xhr.responseJSON && xhr.responseJSON.message
+                            ? xhr.responseJSON.message
+                            : 'Failed to resend verification email. Please try again later.';
+
+                        $('#notificationToast').remove();
+
+                        // Create error notification
+                        var notificationDiv = $('<div>', {
+                            class: 'alert alert-danger alert-dismissible fade show position-fixed top-0 end-0',
+                            role: 'alert',
+                            id: 'notificationToast',
+                            style: 'top: 80px!important; right: 30px!important; z-index: 100'
+                        });
+
+                        // Add message and close button
+                        notificationDiv.html(
+                            message +
+                            '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>'
+                        );
+
+                        $('main').append(notificationDiv);
+
+                        // Show toast
+                        const toast = new bootstrap.Toast(document.getElementById('notificationToast'), {
+                            autohide: true,
+                            delay: 5000
+                        });
+                        toast.show();
+
+                        // Enable button again in case of error
+                        btn.prop('disabled', false);
+                        $('#countdown').addClass('d-none');
+                    }
+                });
+            });
         });
     </script>
 }

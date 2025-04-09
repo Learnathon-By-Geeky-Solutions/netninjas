@@ -35,5 +35,10 @@ namespace QRCodeBasedMetroTicketingSystem.Infrastructure.Repositories
         {
             return await _dbSet.FindAsync(id);
         }
+
+        public async Task<User?> GetUserByEmailAsync(string email)
+        {
+            return await _dbSet.FirstOrDefaultAsync(u => u.Email == email);
+        }
     }
 }

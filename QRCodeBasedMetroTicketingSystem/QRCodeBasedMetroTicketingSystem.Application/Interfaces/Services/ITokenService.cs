@@ -6,7 +6,6 @@ namespace QRCodeBasedMetroTicketingSystem.Application.Interfaces.Services
     {
         Task<string> GenerateEmailVerificationToken(string email);
         Task<string> GeneratePasswordResetToken(string email);
-        Task<bool> ValidateTokenAsync(string email, TokenType tokenType, string token);
-        Task MarkTokenAsUsedAsync(string email);
+        Task<UserToken?> GetValidTokenAsync(string email, TokenType tokenType, string token);
     }
 }

@@ -8,7 +8,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Mvc.Razor;
-using Microsoft.AspNetCore.Identity;
+using QRCodeBasedMetroTicketingSystem.Application.Common.Result;
 
 namespace QRCodeBasedMetroTicketingSystem.Web.Controllers
 {
@@ -48,7 +48,6 @@ namespace QRCodeBasedMetroTicketingSystem.Web.Controllers
         }
 
         [HttpPost("Register")]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterUserViewModel model)
         {
             if (!ModelState.IsValid)
@@ -74,7 +73,6 @@ namespace QRCodeBasedMetroTicketingSystem.Web.Controllers
             {
                 await SendEmailVerificationMail(model.Email, model.FullName);
                 TempData["RegisteredEmail"] = model.Email;
-                TempData["SuccessMessage"] = result.Message;
                 return RedirectToAction("VerificationEmailSent");
             }
             else
@@ -187,40 +185,60 @@ namespace QRCodeBasedMetroTicketingSystem.Web.Controllers
             return View();
         }
 
+        [HttpPost("ResendVerificationEmail")]
+        public async Task<IActionResult> ResendVerificationEmail(string email)
+        {
+            if (string.IsNullOrEmpty(email))
+            {
+                return Json(new { success = false, message = "Email address is required." });
+            }
+
+            // Check if user exists and is not verified
+            var user = await _userService.GetUserByEmailAsync(email);
+            if (user == null)
+            {
+                return Json(new { success = false, message = "User not found." });
+            }
+
+            if (user.IsEmailVerified)
+            {
+                return Json(new { success = false, message = "Email is already verified." });
+            }
+
+            // Send verification email
+            await SendEmailVerificationMail(user.Email, user.FullName);
+
+            return Json(new { success = true, message = "Verification email has been resent. Please check your inbox." });
+        }
+
         [Route("VerifyEmail")]
         public async Task<IActionResult> VerifyEmail(string email, string token)
         {
             if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(token))
             {
-                return BadRequest("Invalid verification information");
+                return RedirectToAction("EmailVerificationFailed", "Account");
             }
 
-            //var user = await _userManager.FindByIdAsync(userId.ToString());
-            //if (user == null)
-            //{
-            //    return NotFound("User not found");
-            //}
+            var result = await _userService.VerifyEmailAsync(email, token);
 
-            //// Check if token is valid
-            //var userToken = await _tokenService.GetValidTokenAsync(userId, "EmailVerification", token);
-            //if (userToken == null)
-            //{
-            //    return BadRequest("Invalid or expired verification token");
-            //}
-
-            //// Mark email as verified
-            //user.EmailVerified = true;
-            //user.UpdatedAt = DateTime.UtcNow;
-            //await _userManager.UpdateAsync(user);
-
-            // Mark token as used
-            //await _tokenService.MarkTokenAsUsedAsync(userToken.Id);
-
-            return RedirectToAction("Login", "Account");
+            if (result.IsSuccess)
+            {
+                return RedirectToAction("EmailVerificationSuccess", "Account");
+            }
+            else
+            {
+                return RedirectToAction("EmailVerificationFailed", "Account");
+            }     
         }
 
         [Route("EmailVerificationSuccess")]
         public IActionResult EmailVerificationSuccess()
+        {
+            return View();
+        }
+
+        [Route("EmailVerificationFailed")]
+        public IActionResult EmailVerificationFailed()
         {
             return View();
         }

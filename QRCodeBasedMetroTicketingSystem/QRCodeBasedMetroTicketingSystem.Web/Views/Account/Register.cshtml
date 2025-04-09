@@ -67,8 +67,9 @@
                             </div>
 
                             <div class="d-grid gap-2">
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fas fa-user-plus me-2"></i> Create Account
+                                <button type="submit" class="btn btn-primary" id="createAccountBtn">
+                                    <span class="spinner-border spinner-border-sm me-2 d-none" role="status" aria-hidden="true" id="createSpinner"></span>
+                                    <span class="btn-text"><i class="fas fa-user-plus me-2"></i> Create Account</span>
                                 </button>
                             </div>
                         </form>
@@ -85,4 +86,20 @@
 
 @section Scripts {
     <script src="~/js/auth.js" asp-append-version="true"></script>
+    <script>
+        $(document).ready(function () {
+                const $form = $('#createAccountBtn').closest('form');
+
+                // Handle the form submission instead of button click
+                $form.on('submit', function () {
+                    // Show loading animation
+                    $('#createSpinner').removeClass('d-none');
+                    $('.btn-text').text('Creating...');
+                    $('#createAccountBtn').prop("disabled", true);
+
+                    // Allow form submission to continue
+                    return true; 
+                });
+        });
+    </script>
 }
