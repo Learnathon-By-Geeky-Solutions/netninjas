@@ -223,10 +223,12 @@ namespace QRCodeBasedMetroTicketingSystem.Web.Controllers
 
             if (result.IsSuccess)
             {
+                TempData["VerificationStatus"] = "Success";
                 return RedirectToAction("EmailVerificationSuccess", "Account");
             }
             else
             {
+                TempData["VerificationStatus"] = "Failed";
                 return RedirectToAction("EmailVerificationFailed", "Account");
             }     
         }
@@ -234,12 +236,18 @@ namespace QRCodeBasedMetroTicketingSystem.Web.Controllers
         [Route("EmailVerificationSuccess")]
         public IActionResult EmailVerificationSuccess()
         {
+            if (TempData["VerificationStatus"]?.ToString() != "Success")
+                return RedirectToAction("Login", "Account");
+
             return View();
         }
 
         [Route("EmailVerificationFailed")]
         public IActionResult EmailVerificationFailed()
         {
+            if (TempData["VerificationStatus"]?.ToString() != "Failed")
+                return RedirectToAction("Login", "Account");
+
             return View();
         }
 
