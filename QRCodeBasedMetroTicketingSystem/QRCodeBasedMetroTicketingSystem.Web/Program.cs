@@ -9,7 +9,6 @@ using QRCodeBasedMetroTicketingSystem.Infrastructure.Services;
 using QRCodeBasedMetroTicketingSystem.Web.Mapping;
 using QRCodeBasedMetroTicketingSystem.Web.Services;
 using StackExchange.Redis;
-using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,7 +25,7 @@ var redisConnectionString = builder.Configuration.GetConnectionString("RedisConn
 builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
     ConnectionMultiplexer.Connect(redisConnectionString));
 
-// JWT Configuration
+// Cookie Configuration
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;

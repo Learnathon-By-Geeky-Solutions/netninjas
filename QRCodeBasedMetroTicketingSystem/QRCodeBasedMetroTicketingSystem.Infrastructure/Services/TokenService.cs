@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using QRCodeBasedMetroTicketingSystem.Application.Interfaces.Repositories;
+﻿using QRCodeBasedMetroTicketingSystem.Application.Interfaces.Repositories;
 using QRCodeBasedMetroTicketingSystem.Application.Interfaces.Services;
 using QRCodeBasedMetroTicketingSystem.Domain.Entities;
 
@@ -8,7 +7,6 @@ namespace QRCodeBasedMetroTicketingSystem.Infrastructure.Services
     public class TokenService : ITokenService
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly DateTime _tokenLifetime = DateTime.UtcNow.AddHours(24);
 
         public TokenService(IUnitOfWork unitOfWork)
         {
@@ -17,15 +15,17 @@ namespace QRCodeBasedMetroTicketingSystem.Infrastructure.Services
 
         public async Task<string> GenerateEmailVerificationToken(string email)
         {
-            return await GenerateTokenAsync(email, TokenType.EmailVerification);
+            DateTime tokenLifetime = DateTime.UtcNow.AddHours(24);
+            return await GenerateTokenAsync(email, TokenType.EmailVerification, tokenLifetime);
         }
 
         public async Task<string> GeneratePasswordResetToken(string email)
         {
-            return await GenerateTokenAsync(email, TokenType.PasswordReset);
+            DateTime tokenLifetime = DateTime.UtcNow.AddMinutes(30);
+            return await GenerateTokenAsync(email, TokenType.PasswordReset, tokenLifetime);
         }
 
-        private async Task<string> GenerateTokenAsync(string email, TokenType tokenType)
+        private async Task<string> GenerateTokenAsync(string email, TokenType tokenType, DateTime tokenLifetime)
         {
             string token = Guid.NewGuid().ToString("N");
 
@@ -34,7 +34,7 @@ namespace QRCodeBasedMetroTicketingSystem.Infrastructure.Services
                 Email = email,
                 Token = token,
                 Type = tokenType,
-                ExpiryDate = _tokenLifetime,
+                ExpiryDate = tokenLifetime,
             };
 
             await _unitOfWork.UserTokenRepository.AddTokenAsync(userToken);

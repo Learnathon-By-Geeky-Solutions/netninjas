@@ -134,24 +134,33 @@
 
 /* Email Verification success Specific Styles */
 /* Confetti Animation */
-.confetti {
-    position: absolute;
-    width: 10px;
-    height: 10px;
-    background-color: var(--primary-color);
-    opacity: 0.8;
-    animation: confetti-fall 3s ease-in-out infinite;
+.confetti-animation {
+    display: flex;
+    justify-content: center;
 
-    &:nth-child(2n) {
-        background-color: var(--secondary-color);
-    }
+    #confetti-container {
+        width: 95%;
+    } 
+    
+    .confetti {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        background-color: var(--primary-color);
+        opacity: 0.8;
+        animation: confetti-fall 3s ease-in-out infinite;
 
-    &:nth-child(3n) {
-        background-color: #ffb81c;
-    }
+        &:nth-child(2n) {
+            background-color: var(--secondary-color);
+        }
 
-    &:nth-child(4n) {
-        background-color: #3498db;
+        &:nth-child(3n) {
+            background-color: #ffb81c;
+        }
+
+        &:nth-child(4n) {
+            background-color: #3498db;
+        }
     }
 }
 
@@ -167,7 +176,7 @@
     }
 }
 
-.email-verification-success {
+.email-verification-success, .password-reset-success {
     .card-body {
         padding: 40px 30px;
     }
@@ -324,6 +333,112 @@
             transform: translateX(5px);
         }
     }
+    /* Responsive Adjustments */
+    @media (max-width: 576px) {
+        .card-body {
+            padding: 20px;
+        }
+
+        .error-icon {
+            width: 100px;
+            height: 100px;
+            font-size: 3rem;
+        }
+    }
+}
+
+.forgot-password, .reset-password {
+    .card-body {
+        padding: 30px;
+    }
+    /* Key Icon */
+    .key-icon {
+        width: 110px;
+        height: 110px;
+        background-color: rgba(0, 106, 78, 0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+        color: var(--primary-color);
+        font-size: 3rem;
+        animation: rotate 3s ease-in-out infinite;
+    }
+    /* Security Note */
+    .security-note {
+        background-color: rgba(0, 106, 78, 0.05);
+        border-radius: 10px;
+        padding: 15px;
+        margin-top: 20px;
+
+        h5 {
+            color: var(--primary-color);
+            font-size: 1rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        p {
+            color: var(--gray-color);
+            font-size: 0.9rem;
+            margin-bottom: 0;
+            text-align: justify
+        }
+    }
+    /* Responsive Adjustments */
+    @media (max-width: 576px) {
+        .card-body {
+            padding: 20px;
+        }
+
+        .key-icon {
+            width: 90px;
+            height: 90px;
+            font-size: 2.6rem;
+        }
+    }
+}
+
+.password-reset-success {
+    /* Security Info */
+    .security-info {
+        background-color: rgba(40, 167, 69, 0.05);
+        border-radius: 10px;
+        padding: 20px;
+        margin-top: 30px;
+
+        h5 {
+            color: var(--primary-color);
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 0;
+            margin-bottom: 0;
+
+            li {
+                margin-bottom: 12px;
+                color: var(--gray-color);
+                display: flex;
+                align-items: flex-start;
+                text-align: justify;
+
+                &:last-child {
+                    margin-bottom: 0;
+                }
+
+                i {
+                    color: var(--primary-color);
+                    margin-top: 4px;
+                    margin-right: 10px;
+                }
+            }
+        }
+    }
 }
 
 @keyframes pulse {
@@ -337,5 +452,23 @@
 
     100% {
         transform: scale(1);
+    }
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    25% {
+        transform: rotate(10deg);
+    }
+
+    75% {
+        transform: rotate(-10deg);
+    }
+
+    100% {
+        transform: rotate(0deg);
     }
 }

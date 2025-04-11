@@ -114,7 +114,14 @@
 
 /* Email Verification success Specific Styles */
 /* Confetti Animation */
-.confetti {
+.confetti-animation {
+  display: flex;
+  justify-content: center;
+}
+.confetti-animation #confetti-container {
+  width: 95%;
+}
+.confetti-animation .confetti {
   position: absolute;
   width: 10px;
   height: 10px;
@@ -122,13 +129,13 @@
   opacity: 0.8;
   animation: confetti-fall 3s ease-in-out infinite;
 }
-.confetti:nth-child(2n) {
+.confetti-animation .confetti:nth-child(2n) {
   background-color: var(--secondary-color);
 }
-.confetti:nth-child(3n) {
+.confetti-animation .confetti:nth-child(3n) {
   background-color: #ffb81c;
 }
-.confetti:nth-child(4n) {
+.confetti-animation .confetti:nth-child(4n) {
   background-color: #3498db;
 }
 
@@ -142,16 +149,16 @@
     opacity: 0;
   }
 }
-.email-verification-success {
+.email-verification-success, .password-reset-success {
   /* Success Icon */
   /* Next Steps Section */
   /* Countdown */
   /* Responsive Adjustments */
 }
-.email-verification-success .card-body {
+.email-verification-success .card-body, .password-reset-success .card-body {
   padding: 40px 30px;
 }
-.email-verification-success .success-icon {
+.email-verification-success .success-icon, .password-reset-success .success-icon {
   width: 120px;
   height: 120px;
   background-color: rgba(0, 106, 78, 0.1);
@@ -165,7 +172,7 @@
   position: relative;
   animation: pulse 2s infinite;
 }
-.email-verification-success .success-icon::after {
+.email-verification-success .success-icon::after, .password-reset-success .success-icon::after {
   content: "";
   position: absolute;
   width: 140px;
@@ -174,33 +181,33 @@
   border-radius: 50%;
   opacity: 0.3;
 }
-.email-verification-success .next-steps {
+.email-verification-success .next-steps, .password-reset-success .next-steps {
   background-color: rgba(0, 106, 78, 0.05);
   border-radius: 10px;
   padding: 15px;
   margin-top: 20px;
 }
-.email-verification-success .next-steps h5 {
+.email-verification-success .next-steps h5, .password-reset-success .next-steps h5 {
   color: var(--primary-color);
   font-size: 1rem;
   margin-bottom: 15px;
 }
-.email-verification-success .next-steps ul {
+.email-verification-success .next-steps ul, .password-reset-success .next-steps ul {
   padding-left: 20px;
   margin-bottom: 0;
 }
-.email-verification-success .next-steps ul li {
+.email-verification-success .next-steps ul li, .password-reset-success .next-steps ul li {
   margin-bottom: 5px;
   color: var(--gray-color);
   font-size: 0.9rem;
   text-align: justify;
 }
-.email-verification-success .countdown-container {
+.email-verification-success .countdown-container, .password-reset-success .countdown-container {
   text-align: center;
   color: var(--gray-color);
   font-size: 0.9rem;
 }
-.email-verification-success .countdown-container .countdown {
+.email-verification-success .countdown-container .countdown, .password-reset-success .countdown-container .countdown {
   font-weight: bold;
   color: var(--primary-color);
 }
@@ -215,15 +222,15 @@
   }
 }
 @media (max-width: 576px) {
-  .email-verification-success .card-body {
+  .email-verification-success .card-body, .password-reset-success .card-body {
     padding: 30px 20px;
   }
-  .email-verification-success .success-icon {
+  .email-verification-success .success-icon, .password-reset-success .success-icon {
     width: 100px;
     height: 100px;
     font-size: 4rem;
   }
-  .email-verification-success .success-icon::after {
+  .email-verification-success .success-icon::after, .password-reset-success .success-icon::after {
     width: 120px;
     height: 120px;
   }
@@ -232,6 +239,7 @@
 .email-verification-failed {
   /* Error Icon */
   /* Possible Reasons Section */
+  /* Responsive Adjustments */
 }
 .email-verification-failed .card-body {
   padding: 30px;
@@ -284,6 +292,102 @@
     transform: translateX(5px);
   }
 }
+@media (max-width: 576px) {
+  .email-verification-failed .card-body {
+    padding: 20px;
+  }
+  .email-verification-failed .error-icon {
+    width: 100px;
+    height: 100px;
+    font-size: 3rem;
+  }
+}
+
+.forgot-password, .reset-password {
+  /* Key Icon */
+  /* Security Note */
+  /* Responsive Adjustments */
+}
+.forgot-password .card-body, .reset-password .card-body {
+  padding: 30px;
+}
+.forgot-password .key-icon, .reset-password .key-icon {
+  width: 110px;
+  height: 110px;
+  background-color: rgba(0, 106, 78, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  color: var(--primary-color);
+  font-size: 3rem;
+  animation: rotate 3s ease-in-out infinite;
+}
+.forgot-password .security-note, .reset-password .security-note {
+  background-color: rgba(0, 106, 78, 0.05);
+  border-radius: 10px;
+  padding: 15px;
+  margin-top: 20px;
+}
+.forgot-password .security-note h5, .reset-password .security-note h5 {
+  color: var(--primary-color);
+  font-size: 1rem;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+.forgot-password .security-note p, .reset-password .security-note p {
+  color: var(--gray-color);
+  font-size: 0.9rem;
+  margin-bottom: 0;
+  text-align: justify;
+}
+@media (max-width: 576px) {
+  .forgot-password .card-body, .reset-password .card-body {
+    padding: 20px;
+  }
+  .forgot-password .key-icon, .reset-password .key-icon {
+    width: 90px;
+    height: 90px;
+    font-size: 2.6rem;
+  }
+}
+
+.password-reset-success {
+  /* Security Info */
+}
+.password-reset-success .security-info {
+  background-color: rgba(40, 167, 69, 0.05);
+  border-radius: 10px;
+  padding: 20px;
+  margin-top: 30px;
+}
+.password-reset-success .security-info h5 {
+  color: var(--primary-color);
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+}
+.password-reset-success .security-info ul {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 0;
+}
+.password-reset-success .security-info ul li {
+  margin-bottom: 12px;
+  color: var(--gray-color);
+  display: flex;
+  align-items: flex-start;
+  text-align: justify;
+}
+.password-reset-success .security-info ul li:last-child {
+  margin-bottom: 0;
+}
+.password-reset-success .security-info ul li i {
+  color: var(--primary-color);
+  margin-top: 4px;
+  margin-right: 10px;
+}
 
 @keyframes pulse {
   0% {
@@ -294,5 +398,19 @@
   }
   100% {
     transform: scale(1);
+  }
+}
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(10deg);
+  }
+  75% {
+    transform: rotate(-10deg);
+  }
+  100% {
+    transform: rotate(0deg);
   }
 }

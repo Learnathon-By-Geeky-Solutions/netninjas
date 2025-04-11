@@ -3,12 +3,9 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using QRCodeBasedMetroTicketingSystem.Application.Interfaces.Services;
 using QRCodeBasedMetroTicketingSystem.Web.Models;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using Microsoft.AspNetCore.Mvc.Razor;
-using QRCodeBasedMetroTicketingSystem.Application.Common.Result;
+using QRCodeBasedMetroTicketingSystem.Application.DTOs;
 
 namespace QRCodeBasedMetroTicketingSystem.Web.Controllers
 {
@@ -16,23 +13,12 @@ namespace QRCodeBasedMetroTicketingSystem.Web.Controllers
     {
         private readonly IUserService _userService;
         private readonly ITokenService _tokenService;
-        private readonly IRazorViewEngine _viewEngine;
-        private readonly ITempDataProvider _tempDataProvider;
-        private readonly IServiceProvider _serviceProvider;
         private readonly IEmailService _emailService;
 
-        public AccountController(IUserService userService, 
-            ITokenService tokenService,
-            IRazorViewEngine viewEngine,
-            ITempDataProvider tempDataProvider,
-            IServiceProvider serviceProvider,
-            IEmailService emailService)
+        public AccountController(IUserService userService, ITokenService tokenService, IEmailService emailService)
         {
             _userService = userService;
             _tokenService = tokenService;
-            _viewEngine = viewEngine;
-            _tempDataProvider = tempDataProvider;
-            _serviceProvider = serviceProvider;
             _emailService = emailService;
         }
 
@@ -48,6 +34,7 @@ namespace QRCodeBasedMetroTicketingSystem.Web.Controllers
         }
 
         [HttpPost("Register")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterUserViewModel model)
         {
             if (!ModelState.IsValid)
@@ -71,9 +58,16 @@ namespace QRCodeBasedMetroTicketingSystem.Web.Controllers
 
             if (result.IsSuccess)
             {
-                await SendEmailVerificationMail(model.Email, model.FullName);
-                TempData["RegisteredEmail"] = model.Email;
-                return RedirectToAction("VerificationEmailSent");
+                var isSent = await SendEmailVerificationMail(model.Email, model.FullName);
+                if (isSent)
+                {
+                    return RedirectToAction("VerificationEmailSent", new { email = model.Email });
+                }
+                else
+                {
+                    TempData["InfoMessage"] = "Account created, but failed to send verification email. Please login to send again.";
+                    return RedirectToAction("Login", "Account");
+                }
             }
             else
             {
@@ -116,20 +110,26 @@ namespace QRCodeBasedMetroTicketingSystem.Web.Controllers
                 // Check if email is verified
                 if (!result.User.IsEmailVerified)
                 {
-                    await SendEmailVerificationMail(result.User.Email, result.User.FullName);
-                    TempData["RegisteredEmail"] = result.User.Email;
-                    TempData["InfoMessage"] = "Please verify your email before logging in.";
-                    return RedirectToAction("VerificationEmailSent");
+                    var isSent = await SendEmailVerificationMail(result.User.Email, result.User.FullName);
+                    if (isSent)
+                    {
+                        TempData["InfoMessage"] = "Please verify your email before logging in.";
+                        return RedirectToAction("VerificationEmailSent", new { email = result.User.Email });
+                    }
+                    else
+                    {
+                        TempData["ErrorMessage"] = "An error occurred while attempting to log in. Please try again.";
+                        return View(model);
+                    }
                 }
 
                 // Create claims from JWT token data
-                var tokenHandler = new JwtSecurityTokenHandler();
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.NameIdentifier, result.User.Id.ToString()),
                     new Claim(ClaimTypes.Name, result.User.FullName!),
-                    new Claim(ClaimTypes.Role, "User"),
-                    new Claim("JwtToken", result.Token)
+                    new Claim(ClaimTypes.Role, ApplicationRoles.User),
+                    new Claim(CustomClaimTypes.JwtToken, result.Token)
                 };
 
                 // Sign in using cookie authentication
@@ -145,7 +145,7 @@ namespace QRCodeBasedMetroTicketingSystem.Web.Controllers
                         ExpiresUtc = DateTime.UtcNow.AddDays(30)
                     });
 
-                Response.Cookies.Append("jwtToken", result.Token, new CookieOptions
+                Response.Cookies.Append(CookieNames.JwtToken, result.Token, new CookieOptions
                 {
                     HttpOnly = true,
                     Secure = true,
@@ -170,15 +170,14 @@ namespace QRCodeBasedMetroTicketingSystem.Web.Controllers
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
             // Clear the JWT token cookie
-            Response.Cookies.Delete("jwtToken");
+            Response.Cookies.Delete(CookieNames.JwtToken);
 
             return RedirectToAction("Index", "Home");
         }
 
         [Route("VerificationEmailSent")]
-        public IActionResult VerificationEmailSent()
+        public IActionResult VerificationEmailSent(string email)
         {
-            var email = TempData["RegisteredEmail"]?.ToString();
             if (string.IsNullOrEmpty(email))
                 return RedirectToAction("Login", "Account");
 
@@ -206,9 +205,20 @@ namespace QRCodeBasedMetroTicketingSystem.Web.Controllers
             }
 
             // Send verification email
-            await SendEmailVerificationMail(user.Email, user.FullName);
-
-            return Json(new { success = true, message = "Verification email has been resent. Please check your inbox." });
+            var isSent = await SendEmailVerificationMail(user.Email, user.FullName);
+            if (isSent)
+            {
+                return Json(new { success = true, message = "Verification email has been resent. Please check your inbox." });
+            }
+            else
+            {
+                Response.StatusCode = 500;
+                return Json(new
+                {
+                    success = false,
+                    message = "An error occurred while sending the email. Please try again."
+                });
+            }
         }
 
         [Route("VerifyEmail")]
@@ -223,44 +233,134 @@ namespace QRCodeBasedMetroTicketingSystem.Web.Controllers
 
             if (result.IsSuccess)
             {
-                TempData["VerificationStatus"] = "Success";
-                return RedirectToAction("EmailVerificationSuccess", "Account");
+                return RedirectToAction("EmailVerificationSuccess", "Account", new { token });
             }
             else
             {
-                TempData["VerificationStatus"] = "Failed";
-                return RedirectToAction("EmailVerificationFailed", "Account");
+                return RedirectToAction("EmailVerificationFailed", "Account", new { token });
             }     
         }
 
         [Route("EmailVerificationSuccess")]
-        public IActionResult EmailVerificationSuccess()
+        public IActionResult EmailVerificationSuccess(string token)
         {
-            if (TempData["VerificationStatus"]?.ToString() != "Success")
+            if (string.IsNullOrEmpty(token))
                 return RedirectToAction("Login", "Account");
 
             return View();
         }
 
         [Route("EmailVerificationFailed")]
-        public IActionResult EmailVerificationFailed()
+        public IActionResult EmailVerificationFailed(string token)
         {
-            if (TempData["VerificationStatus"]?.ToString() != "Failed")
+            if (string.IsNullOrEmpty(token))
                 return RedirectToAction("Login", "Account");
 
             return View();
         }
 
-        private async Task SendEmailVerificationMail(string email, string name)
+        [Route("ForgotPassword")]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost("SendPasswordResetEmail")]
+        public async Task<IActionResult> SendPasswordResetEmail(string email)
+        {
+            if (string.IsNullOrEmpty(email))
+            {
+                return Json(new { success = false, message = "Email address is required." });
+            }
+
+            // Check if user exists and is not verified
+            var user = await _userService.GetUserByEmailAsync(email);
+            if (user == null)
+            {
+                return Json(new { success = true, message = "If an account exists, a password reset email has been sent." });
+            }
+
+            // Send password reset email
+            var isSent = await SendPasswordResetMail(user.Email, user.FullName);
+            if (isSent)
+            {
+                return Json(new { success = true, message = "If an account exists, a password reset email has been sent." });
+            }
+            else
+            {
+                Response.StatusCode = 500;
+                return Json(new
+                {
+                    success = false,
+                    message = "An error occurred while sending the email. Please try again."
+                });
+            }
+        }
+
+        [Route("ResetPassword")]
+        public IActionResult ResetPassword(string email, string token)
+        {
+            var viewModel = new ResetPasswordModel
+            {
+                Email = email,
+                Token = token
+            };
+            return View(viewModel);
+        }
+
+        [HttpPost("ResetPassword")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetPassword(ResetPasswordModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var result = await _userService.ResetPassword(model);
+
+            if (result.IsSuccess)
+            {
+                return RedirectToAction("ResetPasswordConfirmation", new {email = model.Email});
+            }
+            else
+            {
+                TempData["ErrorMessage"] = result.Message;
+                return View(model);
+            }
+        }
+
+        [Route("ResetPasswordConfirmation")]
+        public IActionResult ResetPasswordConfirmation(string email)
+        {
+            if (string.IsNullOrEmpty(email))
+                return RedirectToAction("Login", "Account");
+
+            return View();
+        }
+
+        private async Task<bool> SendEmailVerificationMail(string email, string name)
         {
             // Generate verification token (valid for 24 hours)
             string token = await _tokenService.GenerateEmailVerificationToken(email);
 
             // Generate verification URL
-            var verificationUrl = Url.Action("VerifyEmail", "Account", new { email = email, token = token }, Request.Scheme);
+            var verificationUrl = Url.Action("VerifyEmail", "Account", new { email, token }, Request.Scheme);
 
-            // Send verification email
-            await _emailService.SendEmailVerificationAsync(email, name, verificationUrl!);
+            // Send verification email and return result
+            return await _emailService.SendEmailVerificationAsync(email, name, verificationUrl!);
+        }
+
+        private async Task<bool> SendPasswordResetMail(string email, string name)
+        {
+            // Generate passeord reset token (valid for 30 minutes)
+            string token = await _tokenService.GeneratePasswordResetToken(email);
+
+            // Generate passeord reset URL
+            var resetUrl = Url.Action("ResetPassword", "Account", new { email, token }, Request.Scheme);
+
+            // Send passeord reset email
+            return await _emailService.SendPasswordResetEmailAsync(email, name, resetUrl!);
         }
     }
 }

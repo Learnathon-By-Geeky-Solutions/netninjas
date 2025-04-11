@@ -131,5 +131,42 @@ namespace QRCodeBasedMetroTicketingSystem.Infrastructure.Services
                 return Result.Failure("An error occurred while verifying email.");
             }
         }
+
+        public async Task<Result> ResetPassword(ResetPasswordModel model)
+        {
+            await _unitOfWork.BeginTransactionAsync();
+            try
+            {
+                var user = await _unitOfWork.UserRepository.GetUserByEmailAsync(model.Email);
+                if (user == null)
+                {
+                    // Not reveal that the user does not exist
+                    return Result.Success("User not found");
+                }
+
+                // Verify token
+                var userToken = await _tokenService.GetValidTokenAsync(model.Email, TokenType.PasswordReset, model.Token);
+                if (userToken == null)
+                {
+                    return Result.Failure("Invalid or expired password reset token");
+                }
+
+                // Update password
+                user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.Password);
+
+                // Mark token as used
+                userToken.IsUsed = true;
+
+                await _unitOfWork.SaveChangesAsync();
+                await _unitOfWork.CommitTransactionAsync();
+
+                return Result.Success("Password reset successful. You can now log in.");
+            }
+            catch
+            {
+                await _unitOfWork.RollbackTransactionAsync();
+                return Result.Failure("An error occurred while changing password.");
+            }
+        }
     }
 }

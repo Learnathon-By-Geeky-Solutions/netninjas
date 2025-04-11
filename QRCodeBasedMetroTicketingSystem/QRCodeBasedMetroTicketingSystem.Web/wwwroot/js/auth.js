@@ -1,6 +1,8 @@
 document.addEventListener('DOMContentLoaded', function() {
     const signupForm = document.getElementById('signupForm');
     const loginForm = document.getElementById('loginForm');
+    const forgotPasswordForm = document.getElementById('forgotPasswordForm');
+    const resetPasswordForm = document.getElementById('resetPasswordForm');
 
     if (signupForm) {
         const fullName = document.getElementById('fullName');
@@ -24,6 +26,18 @@ document.addEventListener('DOMContentLoaded', function() {
     if (loginForm) {
         const phone = document.getElementById('phone');
         phone.addEventListener('input', validateField);
+    }
+
+    if (forgotPasswordForm) {
+        const email = document.getElementById('email');
+        email.addEventListener('input', validateField);
+    }
+
+    if (resetPasswordForm) {
+        const password = document.getElementById('password');
+        const confirmPassword = document.getElementById('confirmPassword');
+        password.addEventListener('input', validateField);
+        confirmPassword.addEventListener('input', validateField);
     }
 
     // Field validation handler

@@ -10,17 +10,15 @@ namespace QRCodeBasedMetroTicketingSystem.Infrastructure.Services
     public class EmailService : IEmailService
     {
         private readonly IConfiguration _configuration;
-        private readonly ILogger<EmailService> _logger;
         private readonly IRazorViewToStringRenderer _razorRenderer;
 
-        public EmailService(IConfiguration configuration, ILogger<EmailService> logger, IRazorViewToStringRenderer razorRenderer)
+        public EmailService(IConfiguration configuration, IRazorViewToStringRenderer razorRenderer)
         {
             _configuration = configuration;
-            _logger = logger;
             _razorRenderer = razorRenderer;
         }
 
-        public async Task SendEmailVerificationAsync(string email, string fullName, string verificationUrl)
+        public async Task<bool> SendEmailVerificationAsync(string email, string fullName, string verificationUrl)
         {
             var model = new EmailVerificationModel
             {
@@ -29,22 +27,24 @@ namespace QRCodeBasedMetroTicketingSystem.Infrastructure.Services
             };
 
             string emailBody = await _razorRenderer.RenderViewToStringAsync("EmailVerification", model);
-            await SendEmailAsync(email, "Verify Your Email for Dhaka Metro Rail Account", emailBody);
+            string emailSubject = "Verify Your Email for Dhaka Metro Rail Account";
+            return await SendEmailAsync(email, emailSubject, emailBody);    
         }
 
-        public async Task SendPasswordResetEmailAsync(string email, string fullName, string resetUrl)
+        public async Task<bool> SendPasswordResetEmailAsync(string email, string fullName, string resetUrl)
         {
-            var model = new PasswordResetModel
+            var model = new PasswordResetEmailModel
             {
                 FullName = fullName,
                 ResetUrl = resetUrl
             };
 
             string emailBody = await _razorRenderer.RenderViewToStringAsync("PasswordReset", model);
-            await SendEmailAsync(email, "Password Reset Request for Dhaka Metro Rail Account", emailBody);
+            string emailSubject = "Password Reset Request for Dhaka Metro Rail Account";
+            return await SendEmailAsync(email, emailSubject, emailBody);
         }
 
-        public async Task SendEmailAsync(string email, string subject, string message)
+        public async Task<bool> SendEmailAsync(string email, string subject, string message)
         {
             var smtpServer = _configuration["EmailSettings:SmtpServer"];
             var smtpPort = int.Parse(_configuration["EmailSettings:SmtpPort"]!);
@@ -71,12 +71,11 @@ namespace QRCodeBasedMetroTicketingSystem.Infrastructure.Services
             try
             {
                 await client.SendMailAsync(mailMessage);
-                _logger.LogInformation($"Email sent successfully to {email}");
+                return true;
             }
-            catch (Exception ex)
+            catch
             {
-                _logger.LogError($"Failed to send email to {email}: {ex.Message}");
-                throw;
+                return false;
             }
         }
     }
