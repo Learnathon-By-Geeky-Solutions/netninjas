@@ -18,7 +18,8 @@ namespace QRCodeBasedMetroTicketingSystem.Infrastructure.Services
 
         public string GenerateToken(string userId, string name, string role, string? phoneNumber = null, string? email = null)
         {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSettings:SecretKey"]!));
+            var secretKey = _configuration["JwtSettings:SecretKey"];
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey!));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
             var claims = new List<Claim>
@@ -48,33 +49,6 @@ namespace QRCodeBasedMetroTicketingSystem.Infrastructure.Services
             );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
-        }
-
-        public bool ValidateToken(string token)
-        {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.UTF8.GetBytes(_configuration["JwtSettings:SecretKey"]!);
-
-            try
-            {
-                tokenHandler.ValidateToken(token, new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = true,
-                    ValidIssuer = _configuration["JwtSettings:Issuer"],
-                    ValidateAudience = true,
-                    ValidAudience = _configuration["JwtSettings:Audience"],
-                    ValidateLifetime = true,
-                    ClockSkew = TimeSpan.Zero
-                }, out SecurityToken validatedToken);
-
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
         }
     }
 }
