@@ -19,17 +19,18 @@
 .auth-section .input-group-text {
   font-weight: 600;
 }
-.auth-section #loginForm {
+
+#loginForm {
   /* Password Toggle */
   /* Subtle animation */
 }
-.auth-section #loginForm .form-control:not(:focus):not(:placeholder-shown) {
+#loginForm .form-control:not(:focus):not(:placeholder-shown) {
   background-color: rgba(40, 167, 69, 0.1) !important;
 }
-.auth-section #loginForm .password-container input {
+#loginForm .password-container input {
   border-radius: 5px !important;
 }
-.auth-section #loginForm .password-container .password-toggle {
+#loginForm .password-container .password-toggle {
   position: absolute;
   right: 10px;
   top: 50%;
@@ -39,7 +40,7 @@
   z-index: 5;
   transition: all 0.3s ease-in-out;
 }
-.auth-section #loginForm .password-container .password-toggle:hover {
+#loginForm .password-container .password-toggle:hover {
   color: var(--primary-color);
 }
 @keyframes fadeIn {
@@ -52,18 +53,19 @@
     transform: translateY(0);
   }
 }
-.auth-section #loginForm .login-section .card {
+#loginForm .login-section .card {
   animation: fadeIn 0.5s ease forwards;
 }
 
-/* Email Verification sent Specific Styles */
-.email-verification-sent {
+/* Email sent Specific Styles */
+.email-sent-msg {
+  /* Tips Section */
   /* Responsive Adjustments */
 }
-.email-verification-sent .card-body {
+.email-sent-msg .card-body {
   padding: 30px;
 }
-.email-verification-sent .email-icon {
+.email-sent-msg .email-icon {
   width: 120px;
   height: 120px;
   background-color: rgba(0, 106, 78, 0.1);
@@ -76,36 +78,63 @@
   font-size: 3.5rem;
   animation: pulse 2s infinite;
 }
-.email-verification-sent .email-highlight {
-  font-weight: bold;
+.email-sent-msg .email-address {
+  background-color: rgba(0, 106, 78, 0.05);
+  border-radius: 5px;
+  padding: 8px 12px;
+  display: inline-block;
+  font-weight: 600;
   color: var(--primary-color);
 }
-.email-verification-sent .verification-tips {
+.email-sent-msg .tips-section {
   background-color: rgba(0, 106, 78, 0.05);
   border-radius: 10px;
-  padding: 15px;
-  margin-top: 20px;
+  padding: 20px;
+  margin-top: 30px;
+  text-align: left;
 }
-.email-verification-sent .verification-tips h5 {
+.email-sent-msg .tips-section h5 {
   color: var(--primary-color);
-  font-size: 1rem;
+  font-size: 1.05rem;
   margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.email-verification-sent .verification-tips ul {
-  padding-left: 20px;
+.email-sent-msg .tips-section ul {
+  list-style: none;
+  padding-left: 0;
   margin-bottom: 0;
 }
-.email-verification-sent .verification-tips ul li {
-  margin-bottom: 5px;
+.email-sent-msg .tips-section ul li {
+  margin-bottom: 12px;
   color: var(--gray-color);
-  font-size: 0.9rem;
+  display: flex;
+  align-items: flex-start;
+}
+.email-sent-msg .tips-section ul li:last-child {
+  margin-bottom: 0;
+}
+.email-sent-msg .tips-section ul li i {
+  color: var(--primary-color);
+  margin-right: 10px;
+  margin-top: 4px;
+}
+.email-sent-msg .tips-section ul li div span {
+  font-weight: 600;
+}
+.email-sent-msg .tips-section ul li div p {
+  font-size: 0.95rem;
   text-align: justify;
 }
+.email-sent-msg .tips-section ul li div p .email-highlight {
+  font-weight: 600;
+}
 @media (max-width: 576px) {
-  .email-verification-sent .card-body {
+  .email-sent-msg .card-body {
     padding: 20px;
   }
-  .email-verification-sent .email-icon {
+  .email-sent-msg .email-icon {
     width: 100px;
     height: 100px;
     font-size: 3rem;

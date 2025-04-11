@@ -23,53 +23,53 @@
     .input-group-text {
         font-weight: 600;
     }
+}
 
-    #loginForm {
-        .form-control:not(:focus):not(:placeholder-shown) {
-            background-color: rgba(40, 167, 69, 0.1) !important;
-        }
-        /* Password Toggle */
-        .password-container {
-            input {
-                border-radius: 5px !important;
-            }
-
-            .password-toggle {
-                position: absolute;
-                right: 10px;
-                top: 50%;
-                transform: translateY(-50%);
-                color: var(--gray-color);
-                cursor: pointer;
-                z-index: 5;
-                transition: all 0.3s ease-in-out;
-
-                &:hover {
-                    color: var(--primary-color);
-                }
-            }
-        }
-        /* Subtle animation */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+#loginForm {
+    .form-control:not(:focus):not(:placeholder-shown) {
+        background-color: rgba(40, 167, 69, 0.1) !important;
+    }
+    /* Password Toggle */
+    .password-container {
+        input {
+            border-radius: 5px !important;
         }
 
-        .login-section .card {
-            animation: fadeIn 0.5s ease forwards;
+        .password-toggle {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-color);
+            cursor: pointer;
+            z-index: 5;
+            transition: all 0.3s ease-in-out;
+
+            &:hover {
+                color: var(--primary-color);
+            }
         }
+    }
+    /* Subtle animation */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .login-section .card {
+        animation: fadeIn 0.5s ease forwards;
     }
 }
 
-/* Email Verification sent Specific Styles */
-.email-verification-sent {
+/* Email sent Specific Styles */
+.email-sent-msg {
     .card-body {
         padding: 30px;
     }
@@ -88,32 +88,66 @@
         animation: pulse 2s infinite;
     }
 
-    .email-highlight {
-        font-weight: bold;
+    .email-address {
+        background-color: rgba(0, 106, 78, 0.05);
+        border-radius: 5px;
+        padding: 8px 12px;
+        display: inline-block;
+        font-weight: 600;
         color: var(--primary-color);
     }
-
-    .verification-tips {
+    /* Tips Section */
+    .tips-section {
         background-color: rgba(0, 106, 78, 0.05);
         border-radius: 10px;
-        padding: 15px;
-        margin-top: 20px;
+        padding: 20px;
+        margin-top: 30px;
+        text-align: left;
 
         h5 {
             color: var(--primary-color);
-            font-size: 1rem;
+            font-size: 1.05rem;
             margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         ul {
-            padding-left: 20px;
+            list-style: none;
+            padding-left: 0;
             margin-bottom: 0;
 
             li {
-                margin-bottom: 5px;
+                margin-bottom: 12px;
                 color: var(--gray-color);
-                font-size: 0.9rem;
-                text-align: justify;
+                display: flex;
+                align-items: flex-start;
+
+                &:last-child {
+                    margin-bottom: 0;
+                }
+
+                i {
+                    color: var(--primary-color);
+                    margin-right: 10px;
+                    margin-top: 4px;
+                }
+
+                div {
+                    span {
+                        font-weight: 600;
+                    }
+
+                    p {
+                        font-size: 0.95rem;
+                        text-align: justify;
+
+                        .email-highlight {
+                            font-weight: 600;
+                        }
+                    }
+                }
             }
         }
     }

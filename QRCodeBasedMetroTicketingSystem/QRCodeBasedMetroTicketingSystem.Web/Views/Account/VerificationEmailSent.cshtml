@@ -1,12 +1,16 @@
-﻿@{
+﻿@using System.Text.RegularExpressions
+
+@{
     ViewData["Title"] = "Verification Email Sent";
+    var email = Context.Request.Query["email"];
+    string maskedEmail = Regex.Replace(email, @"(?<=.{2}).(?=.*@)", "*");
 }
 
 @section Styles {
     <link rel="stylesheet" href="~/css/auth.min.css" asp-append-version="true" />
 }
 
-<section class="auth-section email-verification-sent py-5">
+<section class="auth-section email-sent-msg py-5">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8 col-lg-6 col-xl-5">
@@ -22,7 +26,8 @@
                         </div>
 
                         <h3 class="mb-3">Check Your Email</h3>
-                        <p class="mb-4">We've sent a verification link to <span class="email-highlight">@TempData["RegisteredEmail"]</span></p>
+                        <p class="mb-3">We've sent a verification link to:</p>
+                        <div class="email-address mb-3">@maskedEmail</div>
                         <p class="mb-4">Please check your inbox and click on the verification link to activate your account.</p>
 
                         <div class="d-grid gap-3">
@@ -32,13 +37,31 @@
                             </button>
                         </div>
 
-                        <!-- Verification Tips -->
-                        <div class="verification-tips mt-4">
-                            <h5><i class="fas fa-lightbulb me-2"></i> Tips:</h5>
-                            <ul>
-                                <li>Check your spam or junk folder if you don't see the email in your inbox.</li>
-                                <li>The verification link will expire in 24 hours.</li>
-                                <li>Make sure your email address was entered correctly.</li>
+                        <!-- Helpful Tips -->
+                        <div class="tips-section mt-4">
+                            <h5><i class="fas fa-lightbulb me-2"></i> Helpful Tips</h5>
+                            <ul class="tips-list">
+                                <li>
+                                    <i class="fas fa-search"></i>
+                                    <div>
+                                        <span>Check your spam folder</span>
+                                        <p class="mb-0">If you don't see the email in your inbox, it might be in your spam or junk folder</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <i class="fas fa-clock"></i>
+                                    <div>
+                                        <span>Link expires in 24 hours</span>
+                                        <p class="mb-0">For security reasons, the verification link will expire in 24 hours</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <i class="fas fa-envelope-open"></i>
+                                    <div>
+                                        <span>Email from Dhaka Metro Rail</span>
+                                        <p class="mb-0">The email will be sent from <span class="email-highlight">info@dhakametrorail.gov.bd</span></p>
+                                    </div>
+                                </li>
                             </ul>
                         </div>
 

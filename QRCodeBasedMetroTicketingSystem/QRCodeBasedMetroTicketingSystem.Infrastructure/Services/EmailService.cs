@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using QRCodeBasedMetroTicketingSystem.Application.Interfaces.Services;
 using System.Net.Mail;
 using System.Net;
@@ -42,6 +41,13 @@ namespace QRCodeBasedMetroTicketingSystem.Infrastructure.Services
             string emailBody = await _razorRenderer.RenderViewToStringAsync("PasswordReset", model);
             string emailSubject = "Password Reset Request for Dhaka Metro Rail Account";
             return await SendEmailAsync(email, emailSubject, emailBody);
+        }
+
+        public async Task<bool> SendPasswordResetConfirmationMail(PasswordResetConfirmationEmailModel model)
+        {
+            string emailBody = await _razorRenderer.RenderViewToStringAsync("PasswordResetConfirmation", model);
+            string emailSubject = "Password Reset Confirmation for Dhaka Metro Rail Account";
+            return await SendEmailAsync(model.Email, emailSubject, emailBody);
         }
 
         public async Task<bool> SendEmailAsync(string email, string subject, string message)

@@ -265,36 +265,37 @@ namespace QRCodeBasedMetroTicketingSystem.Web.Controllers
             return View();
         }
 
-        [HttpPost("SendPasswordResetEmail")]
-        public async Task<IActionResult> SendPasswordResetEmail(string email)
+        [HttpPost("ForgotPassword")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
         {
-            if (string.IsNullOrEmpty(email))
+            if (!ModelState.IsValid)
             {
-                return Json(new { success = false, message = "Email address is required." });
+                return View(model);
             }
 
-            // Check if user exists and is not verified
-            var user = await _userService.GetUserByEmailAsync(email);
+            var user = await _userService.GetUserByEmailAsync(model.Email);
             if (user == null)
             {
-                return Json(new { success = true, message = "If an account exists, a password reset email has been sent." });
+                // Not reveal that the user does not exist
+                return RedirectToAction("ForgotPasswordConfirmation", new { email = model.Email });
             }
 
-            // Send password reset email
+            // Send password reset email and check
             var isSent = await SendPasswordResetMail(user.Email, user.FullName);
-            if (isSent)
+            if (!isSent)
             {
-                return Json(new { success = true, message = "If an account exists, a password reset email has been sent." });
+                TempData["ErroeMessage"] = "An error occurred while sending the email. Please try again.";
+                return View(model);
             }
-            else
-            {
-                Response.StatusCode = 500;
-                return Json(new
-                {
-                    success = false,
-                    message = "An error occurred while sending the email. Please try again."
-                });
-            }
+
+            return RedirectToAction("ForgotPasswordConfirmation", new { email = model.Email });
+        }
+
+        [Route("ForgotPasswordConfirmation")]
+        public IActionResult ForgotPasswordConfirmation()
+        {
+            return View();
         }
 
         [Route("ResetPassword")]
@@ -317,10 +318,27 @@ namespace QRCodeBasedMetroTicketingSystem.Web.Controllers
                 return View(model);
             }
 
+            var user = await _userService.GetUserByEmailAsync(model.Email);
             var result = await _userService.ResetPassword(model);
 
             if (result.IsSuccess)
             {
+                if (user != null)
+                {
+                    var bdTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Bangladesh Standard Time");
+                    var bdTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, bdTimeZone);
+
+                    var emailModel = new PasswordResetConfirmationEmailModel
+                    {
+                        FullName = user.FullName,
+                        Email = user.Email,
+                        DateTime = bdTime.ToString("f"),
+                    };
+
+                    // Send reset password confirmation email
+                    await _emailService.SendPasswordResetConfirmationMail(emailModel);
+                }
+                
                 return RedirectToAction("ResetPasswordConfirmation", new {email = model.Email});
             }
             else
