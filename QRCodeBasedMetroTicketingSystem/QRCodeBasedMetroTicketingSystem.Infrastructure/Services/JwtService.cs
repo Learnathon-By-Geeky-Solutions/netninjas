@@ -1,5 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using QRCodeBasedMetroTicketingSystem.Application.DTOs;
 using QRCodeBasedMetroTicketingSystem.Application.Interfaces.Services;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -9,17 +10,16 @@ namespace QRCodeBasedMetroTicketingSystem.Infrastructure.Services
 {
     public class JwtService : IJwtService
     {
-        private readonly IConfiguration _configuration;
+        private readonly JwtSettings _jwtSettings;
 
-        public JwtService(IConfiguration configuration)
+        public JwtService(IOptions<JwtSettings> jwtOptions)
         {
-            _configuration = configuration;
+            _jwtSettings = jwtOptions.Value;
         }
 
         public string GenerateToken(string userId, string name, string role, string? phoneNumber = null, string? email = null)
         {
-            var secretKey = _configuration["JwtSettings:SecretKey"];
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey!));
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.SecretKey));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
             var claims = new List<Claim>
@@ -41,10 +41,10 @@ namespace QRCodeBasedMetroTicketingSystem.Infrastructure.Services
             }
 
             var token = new JwtSecurityToken(
-                issuer: _configuration["JwtSettings:Issuer"],
-                audience: _configuration["JwtSettings:Audience"],
+                issuer: _jwtSettings.Issuer,
+                audience: _jwtSettings.Audience,
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(Convert.ToDouble(_configuration["JwtSettings:ExpiryInMinutes"])),
+                expires: DateTime.Now.AddMinutes(Convert.ToDouble(_jwtSettings.ExpiryInMinutes)),
                 signingCredentials: credentials
             );
 

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using QRCodeBasedMetroTicketingSystem.Application.DTOs;
 using QRCodeBasedMetroTicketingSystem.Application.Interfaces.Repositories;
 using QRCodeBasedMetroTicketingSystem.Application.Interfaces.Services;
 using QRCodeBasedMetroTicketingSystem.Application.Mapping;
@@ -43,6 +44,9 @@ builder.Services.AddAuthentication(options =>
 
 // Register AutoMapper
 builder.Services.AddAutoMapper(typeof(MappingProfile), typeof(ViewModelMappingProfile));
+
+// Register JwtSettings
+builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
 
 // Register repositories
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
