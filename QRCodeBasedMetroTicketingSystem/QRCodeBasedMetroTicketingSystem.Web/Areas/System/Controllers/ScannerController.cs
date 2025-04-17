@@ -19,6 +19,10 @@ namespace QRCodeBasedMetroTicketingSystem.Web.Areas.System.Controllers
         [Route("ticket/scan")]
         public async Task<IActionResult> ScanTicket([FromBody] ScanTicketRequest request)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             /// <summary>
             /// Validates the QR code and returns the ticket status.
             /// This will later be connected to a database and include business logic.
